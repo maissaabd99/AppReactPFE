@@ -64,6 +64,7 @@ export default function Header(props) {
   return (
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container}>
+        <img src={require("assets/img/logo.png")} alt="logo" style={{width:"90px",height:"54px"}}></img>
         {leftLinks !== undefined ? brandComponent : null}
         <div className={classes.flex}>
           {leftLinks !== undefined ? (
@@ -108,7 +109,7 @@ export default function Header(props) {
 }
 
 Header.defaultProp = {
-  color: "white"
+  color: "primary"
 };
 
 Header.propTypes = {

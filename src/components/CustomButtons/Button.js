@@ -19,7 +19,9 @@ const makeComponentStyles = makeStyles(() => ({
 const RegularButton = React.forwardRef((props, ref) => {
   const {
     color,
+    value,
     round,
+    text,
     children,
     fullWidth,
     disabled,
@@ -27,6 +29,7 @@ const RegularButton = React.forwardRef((props, ref) => {
     size,
     block,
     link,
+    onClick,
     justIcon,
     className,
     ...rest
@@ -44,11 +47,13 @@ const RegularButton = React.forwardRef((props, ref) => {
     [classes.simple]: simple,
     [classes.block]: block,
     [classes.link]: link,
+    [classes.value]: value,
+    [classes.onClick]:onclick,
     [classes.justIcon]: justIcon,
     [className]: className
   });
   return (
-    <Button {...rest} ref={ref} className={btnClasses}>
+    <Button {...rest} ref={ref} className={btnClasses} onClick={onClick} text={text} value={value}>
       {children}
     </Button>
   );
