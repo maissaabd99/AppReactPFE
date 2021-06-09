@@ -18,7 +18,7 @@ export default function SectionNotifications() {
     <div className={classes.section} id="notifications">
       <div className={classes.container}>
         <div className={classes.title}>
-          <h3>Notifications</h3>
+       {   <h3>Notifications</h3>}
         </div>
       </div>
       <SnackbarContent

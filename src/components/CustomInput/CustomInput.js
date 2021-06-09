@@ -79,6 +79,7 @@ export default function CustomInput(props) {
         id={id}
         onKeyUp={onKeyUp}
         onChange={onChange}
+        value={value}
         required
         width={width}
         {...inputProps}

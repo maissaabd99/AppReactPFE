@@ -15,32 +15,20 @@ import { Apps, CloudDownload } from "@material-ui/icons";
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
+import Offres from "views/offres/Offres";
+import ProfilePage from "views/ProfilePage/ProfilePage";
 
 const useStyles = makeStyles(styles);
 
 export default function HeaderLinks(props) {
   const classes = useStyles();
   var buttonvalue ="Se connecter";
-  if(localStorage.getItem('UserEmail')!= ""){
-       buttonvalue = "Déconnexion";
-  }
- 
-  console.log(buttonvalue);
-  function logout(){
-      if (buttonvalue=="Déconnexion"){
-        localStorage.setItem('UserEmail',"");
-        localStorage.setItem('Usernom',"");
-        localStorage.setItem('Userprenom',"");
-        localStorage.setItem('access_token',"");
-        
-      }else{
-        window.location.href="/login";
-      }
-  }
-  return (
+ // console.log("props from headerLinks ",props)  
+  if(props.isAuth ===false){
+  return ( 
     <List className={classes.list}>
         <ListItem className={classes.listItem}>
-        <Link to ="/"  style={{color: "white"}}>
+        <Link to ="/" >
         <Button
           Link="/"
           color="transparent"
@@ -52,96 +40,92 @@ export default function HeaderLinks(props) {
         </Link>
       </ListItem>  
       <ListItem className={classes.listItem}>
-           <Link to ="/"  style={{color: "white"}}>
+           <Link to ="/toutes-les-offres"  style={{color: "white"}}>
            <Button
-             Link="/"
+             Link ="/toutes-les-offres"
              color="transparent"
              target="_blank"
              className={classes.navLink}
            >
-             Nos offres d'emploi
+             Offres d'emploi
            </Button>
            </Link>     
       </ListItem>  
-      {localStorage.getItem('UserEmail')!= "" ? (
-      <ListItem className={classes.listItem}>
-             <Link to ="/moncompte" style={{color: "white"}}>
-             <Button
-               color="transparent"
-               target="_blank"
-               className={classes.navLink}>
-               Mon compte
-             </Button>
-           </Link>
-          </ListItem>)  : (
-             <ListItem className={classes.listItem}>
-           
-          </ListItem>
-          )}
+            
           <ListItem className={classes.listItem}>
              <Link to ="/login" style={{color: "white"}}>
              <Button
-               onClick= {logout}
                color="transparent"
                target="_blank"
                className={classes.navLink}
              >             
-              {buttonvalue}
+             Se connecter
              </Button>
            </Link>
           </ListItem>
-       
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-twitter"
-          title="Follow us on twitter"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            href="https://twitter.com/novencia?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"
-            target="_blank"
-            color="transparent"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-twitter"} />
-          </Button>
-        </Tooltip>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-facebook"
-          title="Follow us on facebook"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href="https://www.facebook.com/NOVENCIAGroup/"
-            target="_blank"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-facebook"} />
-          </Button>
-        </Tooltip>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-tooltip"
-          title="Follow us on LinkedIn"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href="https://www.linkedin.com/company/novencia?originalSubdomain=fr"
-            target="_blank"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-linkedin"} />
-          </Button>
-        </Tooltip>
-      </ListItem>
     </List>
-  );
+  );}else{
+    return (
+      <List className={classes.list}>
+          <ListItem className={classes.listItem}>
+          <Link to ="/"  style={{color: "white"}}>
+          <Button
+            Link="/"
+            color="transparent"
+            target="_blank"
+            className={classes.navLink}
+          >
+            Accueil
+          </Button>
+          </Link>
+        </ListItem>    
+        <ListItem className={classes.listItem}>
+          <Link to ="/candidat/mes-candidatures"  style={{color: "white"}}>
+          <Button
+            color="transparent"
+            target="_blank"
+            className={classes.navLink}
+          > Mes candidatures   
+          </Button>
+          </Link>
+        </ListItem> 
+        <ListItem className={classes.listItem}>
+             <Link to ="/toutes-les-offres"  style={{color: "white"}}>
+             <Button  
+               color="transparent"
+               target="_blank"
+               className={classes.navLink}
+             >
+               Offres d'emploi
+             </Button>
+             </Link>     
+        </ListItem>     
+        <ListItem className={classes.listItem}>
+               <Link to ="/candidat/moncompte" style={{color: "white"}}>
+               <Button
+                 link="/candidat/moncompte"
+                 color="transparent"
+                 target="_blank"
+                 className={classes.navLink}>
+                 Mon compte
+               </Button>
+             </Link>
+            </ListItem>
+            <ListItem className={classes.listItem}>
+               <Link to ="/logout" style={{color: "white"}}>
+               <Button
+                 color="transparent"
+                 target="_blank"
+                 className={classes.navLink}
+               >             
+                Déconnexion
+               </Button>
+             </Link>
+            </ListItem>
+         
+     
+      </List>
+    );
+
+  }
 }

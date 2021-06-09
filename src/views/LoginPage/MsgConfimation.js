@@ -45,35 +45,16 @@ export default function ConfirmMail(props) {
   var iduser = urlParams.get('id')
   console.log(iduser)  
 
-function confirmonclick(){
-  fetch("https://localhost:44392/api/Authentication/Inscription/ConfimMail",{
-        method: 'POST',
-        headers: {
-       'Content-Type': 'application/json'
-     },
-     body: JSON.stringify({ 
-      UserName:iduser   
-      })
-    })
-     .then(data => data.json())
-     .then((result)=>{
-            console.log(result)   
-     },
-     (error)=>{
-       console.log(error)
-     })
-}
-
   return (
     <div>
-      <Header
+     {/* <Header
         absolute
         color="transparent"
         image={require("assets/img/logo.png")}
       //  brand="Area E-Hire"
         rightLinks={<HeaderLinks />}
         {...rest}
-      />
+      />*/}
       <div
         className={classes.pageHeader}
         style={{
@@ -83,13 +64,17 @@ function confirmonclick(){
         }}
       >
         <div className={classes.container}>
-          <GridContainer justify="center">
-            <GridItem xs={4} sm={4} md={5}>
+          <GridContainer justify="center" >
+            <GridItem xs={10} sm={10} md={9}>
               <Card className={classes[cardAnimaton]}>
-                <Link to ="/Login" style={{color: "purple",textAlign:"center"}}>
-                       <Button color="transparent" target="_blanck" onClick={confirmonclick}>
-                            Un email a été envoyé à vous pour la confimation de votre compte , merci de vérifier votre boite email
-                       </Button>
+                <Link  style={{color: "purple",textAlign:"center"}}>
+                    
+                          <h4 style={{textTransform:"none"}}><strong>Un email a été envoyé à vous pour la confimation de votre compte . 
+                            <br></br>
+                            Merci de vérifier votre boite email !
+                          </strong> 
+                          </h4>
+                       
                 </Link>
               </Card>
             </GridItem>

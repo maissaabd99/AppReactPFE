@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // nodejs library that concatenates classes
@@ -11,10 +11,11 @@ import Button from "@material-ui/core/Button";
 import styles from "assets/jss/material-kit-react/components/paginationStyle.js";
 
 const useStyles = makeStyles(styles);
-
 export default function Pagination(props) {
   const classes = useStyles();
-  const { pages, color } = props;
+  const[active,setActive] = useState(false)
+
+  const { pages, color ,value} = props;
   return (
     <ul className={classes.pagination}>
       {pages.map((prop, key) => {
@@ -31,7 +32,7 @@ export default function Pagination(props) {
               </Button>
             ) : (
               <Button
-                onClick={() => alert("you've clicked " + prop.text)}
+                onClick={() => alert("you've clicked " + prop.text +"active"+ prop.active)}
                 className={paginationLink}
               >
                 {prop.text}

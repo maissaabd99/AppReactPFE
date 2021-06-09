@@ -27,7 +27,7 @@ import SectionCompletedExamples from "./Sections/SectionCompletedExamples.js";
 import SectionLogin from "./Sections/SectionLogin.js";
 import SectionExamples from "./Sections/SectionExamples.js";
 import SectionDownload from "./Sections/SectionDownload.js";
-
+import "./stylehome.scss";
 import styles from "assets/jss/material-kit-react/views/components.js";
 
 const useStyles = makeStyles(styles);
@@ -35,34 +35,55 @@ const useStyles = makeStyles(styles);
 export default function Components(props) {
   const classes = useStyles();
   const { ...rest } = props;
+
   return (
-    <div>
+    <div style={{ opacity: "1", transform: "scale(1)" }}>
       <Header
         rightLinks={<HeaderLinks />}
         fixed
-        color="transparent"
-        changeColorOnScroll={{
+        color="white"
+        /*changeColorOnScroll={{
           height: 400,
-          color: "white"
-        }}
+          color: "dark"
+        }}*/
         {...rest}
       />
-      <Parallax image={require("assets/img/bg4.jpg")}>
-        <div className={classes.container}>
-          <GridContainer>
+      
+      <Parallax image={require("assets/img/11.jpg")}
+          style={{ color: "#fff"}}><br></br><br></br>
+          <div style={{background:"rgba(145, 61, 136, 0.6)",width:"100%",position:"relative",height:"100%"}}>
+          <div className={classes.container} >       
+          <GridContainer style={{marginTop:"150px"}}>
             <GridItem>
               <div className={classes.brand}>
-                <h1 className={classes.title}>Area E-Hire</h1>
-                <h3 className={classes.subtitle}>
-                  Rejoignez nous pour une meilleure expérience ...
-                </h3>
+                <h1 className={classes.title} >Area E-Hire</h1>
+                <h1></h1>     
+                  <h2 class="wordCarousel">
+                    <span>Rejoignez-Nous Pour Une Meilleure</span>
+                    
+                    <div>
+                  
+                      <ul class="flip4">
+                        <li>| Expérience ,</li>
+                        <li>| Pratique ,</li>
+                        <li>| Connaissance ,</li>
+                        <li>| Vie Professionnelle . </li>
+                      </ul>
+                    </div>
+                   
+                  </h2>
+                  {/* <div class="rotatingText-content">
+                  <span class="rotatingText-adjective">expérience</span>
+                  <span class="rotatingText-adjective">pratique</span>
+                </div>*/}       
               </div>
             </GridItem>
           </GridContainer>
         </div>
-      </Parallax>
+        </div>
 
-      <div className={classNames(classes.main, classes.mainRaised)}>
+      </Parallax>
+    {/*  <div className={classNames(classes.main, classes.mainRaised)}>
         <SectionBasics />
         <SectionNavbars />
         <SectionTabs />
@@ -82,8 +103,8 @@ export default function Components(props) {
         </GridItem>
         <SectionExamples />
         <SectionDownload />
-      </div>
-      <Footer />
+      </div>*/}
+      <Footer/>
     </div>
   );
 }

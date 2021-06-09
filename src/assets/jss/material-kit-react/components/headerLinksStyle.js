@@ -11,11 +11,11 @@ const headerLinksStyle = theme => ({
     listStyle: "none",
     paddingTop: "0",
     paddingBottom: "0",
-    color: "inherit"
+    color: "default"
   },
   listItem: {
     float: "left",
-    color: "inherit",
+    color: "default",
     position: "relative",
     display: "block",
     width: "auto",
@@ -37,10 +37,10 @@ const headerLinksStyle = theme => ({
     padding: "0 !important"
   },
   navLink: {
-    color: "inherit",
+    color: "purple",
     position: "relative",
     padding: "0.9375rem",
-    fontWeight: "400",
+    fontWeight: "bold",
     fontSize: "12px",
     textTransform: "uppercase",
     borderRadius: "3px",
@@ -49,7 +49,7 @@ const headerLinksStyle = theme => ({
     margin: "0px",
     display: "inline-flex",
     "&:hover,&:focus": {
-      color: "inherit",
+      color: "purple",
       background: "rgba(200, 200, 200, 0.2)"
     },
     [theme.breakpoints.down("sm")]: {
@@ -64,7 +64,7 @@ const headerLinksStyle = theme => ({
     }
   },
   notificationNavLink: {
-    color: "inherit",
+    color: "purple",
     padding: "0.9375rem",
     fontWeight: "400",
     fontSize: "12px",
@@ -87,7 +87,7 @@ const headerLinksStyle = theme => ({
     display: "inline-flex"
   },
   navLinkActive: {
-    color: "inherit",
+    color: "purple",
     backgroundColor: "rgba(255, 255, 255, 0.1)"
   },
   icons: {
@@ -102,7 +102,7 @@ const headerLinksStyle = theme => ({
   },
   dropdownLink: {
     "&,&:hover,&:focus": {
-      color: "inherit",
+      color: "purple",
       textDecoration: "none",
       display: "block",
       padding: "10px 20px"

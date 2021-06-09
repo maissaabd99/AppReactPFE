@@ -12,37 +12,73 @@ import { Link } from "react-router-dom";
 import CustomInput from "components/CustomInput/CustomInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
+import authAxios from "authAxios";
+
 const useStyles = makeStyles(styles);
 
-export default function Langue(props) {
-  const [langs,setLangs]=useState([])
-  function deleteLang(e){
-    console.log("cle"+cle);
-    console.log(className);
-    console.log(Object.entries(tab))
-    var div= document.getElementById(cle);
+export default function Linkedin(props) {
+
+  const [linked,setLinked] = useState(props.linked); 
+  const classes = useStyles();
+  const {ProfilePage,cle,tab,className,...rest} = props;
+  function deleteLinkedin(e){
+    var div= document.getElementById("linkedin");
     console.log(div)
-    div.style.display="none"
+    div.style.display="none";
   }
 
-  const classes = useStyles();
-  const {ProfilePage,cle,tab,className,...rest } = props;
+  function AddLinkedin(e) {
+    e.preventDefault();
+    var id = localStorage.getItem("iduser");
+    var linkedin = document.getElementById("lien").value;
+    if (props.btn == null) {
+      authAxios.post("/Linkedin/AddLinkedin/" + id, {
+        "linkedin": linkedin
+      }).then((response) => {
+        console.log(response.data);
+        var div = document.getElementById("linkedin");
+        div.style.display = "none";
+        //props.setLinkeds([]);
+        props.setDisplaylinkedin([])
+        props.setDisplaylinkedin(props.displaylinkedin.concat(response.data.lin));
+      }, (error) => {
+        console.log(error);
+      })
+    } else {
+      authAxios.put("/Linkedin/UpdateLinkedin/" + cle, {
+        "linkedin": linkedin
+      }).then((response) => {
+        console.log(cle);
+        var div = document.getElementById("linkedin");
+        div.style.display = "none";
+        props.setLinkeds([]);
+        props.setDisplaylinkedin([])
+        props.setDisplaylinkedin(props.displaylinkedin.concat(response.data.updatelinked));
+        console.log(props.displaylinkedin)
+      }, (error) => {
+        console.log(error);
+      })
+    }
+  }
     return (
-      <div style={{marginLeft:"100px"}} id={cle} >
-      <GridItem xs={8} sm={8} md={8}>
+      <div 
+    //  style={{marginLeft:"100px"}} 
+      id="linkedin">
         <Card>
-        <CardBody>
-       
-          <div style={{width:"400px",marginTop:"-2%",}}>
+        <form onSubmit={AddLinkedin}>
+        <CardBody style={{display:"flex",alignItems:"center",flexDirection:"row",flexGrow: 1,justifyContent:"space-around",width:"auto"}}>      
+          <div style={{width:"50%",marginTop:"-2%",}}>    
           <CustomInput  labelText="Coller le lien de votre profil linkedin"
+           id="lien" value={linked}
+           onChange={e=>setLinked(e.currentTarget.value)}
            formControlProps={{
             fullWidth: true
           }}
           inputProps={{
             type: "text",
             endAdornment: (
-              <InputAdornment position="end" style={{marginTop: '-4px'}}>
-               <Icon >
+              <InputAdornment position="end" style={{marginTop:'-4px'}}>
+               <Icon>
                <i class="fab fa-linkedin" style={{fontSize:"17px",color:"purple"}}></i>
                 </Icon>
               </InputAdornment>
@@ -50,15 +86,12 @@ export default function Langue(props) {
           }}>
           </CustomInput>
           </div>
-          <div style={{float:"right",marginTop:"-6%"}}>
-          &nbsp;<Link style={{float:"right"}}><button style={{padding:"8px"}} class="primary">&nbsp;<i class="fas fa-times" title="Fermer" style={{fontSize:"15px"}}></i></button></Link>&nbsp;
-          &nbsp;&nbsp;<Button color="primary" style={{marginTop:"-0%",float:"right",padding:"10px"}}> Enregistrer</Button> &nbsp;
+          <div style={{float:"right",marginTop:"0%"}}>
+            &nbsp;&nbsp;<Button type="submit" color="primary" style={{marginTop:"-0%",float:"right",padding:"10px"}}>Enregistrer</Button> &nbsp;  
           </div>
           </CardBody>
+          </form>
         </Card>                                                                                                                                                 
-    </GridItem>
 </div>
-
-  );
-   
+  );  
 }

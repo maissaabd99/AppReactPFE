@@ -24,6 +24,7 @@ import image from "assets/img/bg7.jpg";
 import { Phone } from "@material-ui/icons";
 import { Redirect } from "react-router";
 import { useHistory } from 'react-router-dom';
+import Loader from "react-loader-spinner";
 const useStyles = makeStyles(styles);
 
  
@@ -41,19 +42,25 @@ export default function LoginPage(props) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  var valnom;
-  var valpren;
+
+  const [valnom,setValNom] =  useState(false);
+  const [valpren,setvalpren] =  useState(false);
+  const [valusername,setvalusername] =  useState(false);
+  const [valpassword,setvalpassword] =  useState(false);
+  const [loading, setLoading] = useState(false);
+
+  /*var valpren;
   var valusername;
-  var valpassword;
+  var valpassword;*/
  
   function  validatenom(){
     if(document.getElementById('nom').value.length>15 ||document.getElementById('nom').value.length<3){
       document.getElementById('errornom').textContent="Nom doit etre entre 3 et 15 caractères";
-      valnom= false
+      setValNom(false);
     }else{
       if(document.getElementById('nom').value.length<=15 && document.getElementById('nom').value.length>=3){
         document.getElementById('errornom').textContent="";
-        valnom=true;
+        setValNom(true);
       }    
     }
     console.log(valnom);
@@ -62,11 +69,11 @@ export default function LoginPage(props) {
   function validateprenom(){
     if(document.getElementById('prenom').value.length>15 ||document.getElementById('prenom').value.length<3){
       document.getElementById('errorpren').textContent="Prénom doit etre entre 3 et 15 caractères";
-      valpren=false;
+      setvalpren(false);
     }else{
       if(document.getElementById('prenom').value.length<=15 && document.getElementById('prenom').value.length>=3){
         document.getElementById('errorpren').textContent="";
-        valpren=true;
+        setvalpren (true);
       }     
     }
     console.log(valpren)
@@ -75,11 +82,11 @@ export default function LoginPage(props) {
   function validateusername(){
     if(document.getElementById('username').value.length>15 ||document.getElementById('username').value.length<3){
       document.getElementById('errorusername').textContent="Nom d'utilisateur doit etre entre 3 et 15 caractères";
-      valusername=false;
+      setvalusername (false);
     }else{
       if(document.getElementById('username').value.length<=15 && document.getElementById('username').value.length>=3){
         document.getElementById('errorusername').textContent="";
-        valusername=true;
+        setvalusername (true);
       }     
     }
     console.log(valusername);
@@ -87,23 +94,26 @@ export default function LoginPage(props) {
   function validatepass(){
     if(document.getElementById('pass').value.length <6 ){
       document.getElementById('errorpassword').textContent="Mot de passe doit contenir au moins 6 caractères ";
-      valpassword=false;
+      setvalpassword (false);
     }else{
       var format2=/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/;
       if(format2.test(document.getElementById('pass').value)==true){
           document.getElementById('errorpassword').textContent="";
-          valpassword=true;
+          setvalpassword (true);
       } else{
         document.getElementById('errorpassword').textContent="Vous devez inclure au moins un caractère spécial ,un majuscule et un chiffre ";
-        valpassword=false;
+        setvalpassword (false);
       }
     } 
     console.log(valpassword)   
   }
   function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true)
+    document.getElementById('erroremail').textContent="";
+    document.getElementById('errorusername').textContent="";
      console.log(valpren)
-   // if((valnom===true) && (valpren===true) && (valusername===true) && (valpassword===true)){    
+    if((valnom===true) && (valpren===true) && (valusername===true) && (valpassword===true)){    
      fetch("https://localhost:44392/api/Authentication/Register",{
         method: 'POST',
         headers: {
@@ -122,20 +132,24 @@ export default function LoginPage(props) {
       console.log(result.message)
       if(result.message=="Cette adresse mail est déjà utilisée"){
         document.getElementById('erroremail').textContent=result.message;
+        setLoading(false)
       }else{
         if(result.message=="Nom d'utilisateur déjà utilisé!"){
           document.getElementById('errorusername').textContent=result.message;
+          setLoading(false)
         }
         else{
-        //redirect(result.status)
+        setLoading(false)
+        redirect(result.status)
         }
       }
      },
      (error)=>{
        alert(error.message)
+       setLoading(false)
        console.log(error.message)
      })
-  //}
+  }
 }
   function redirect(string){
     if(string==="success 200 "){
@@ -143,15 +157,15 @@ export default function LoginPage(props) {
     }  
   }
 
+
   return (
     <div>
-      <Header
+     {/* <Header
         absolute
         color="transparent"
-       // brand="Area E-Hire"
         rightLinks={<HeaderLinks />}
         {...rest}
-      />
+      />*/}
       <div
         className={classes.pageHeader}
         style={{
@@ -169,6 +183,7 @@ export default function LoginPage(props) {
                     <h4>Inscrivez-vous </h4>
                   </CardHeader>
                   <CardBody>
+                  <Loader type="Bars" color="purple" height={30} width={30} style={{marginLeft:"45%"}} visible={loading}></Loader>
                     <CustomInput
                       labelText="Nom ..."
                       id="nom"
@@ -181,6 +196,7 @@ export default function LoginPage(props) {
                       }}
                       inputProps={{
                         type: "text",
+                        
                         endAdornment: (
                           <InputAdornment position="end">
                             <People className={classes.inputIconsColor} />
@@ -241,7 +257,7 @@ export default function LoginPage(props) {
                         endAdornment: (
                           <InputAdornment position="end" style={{marginTop: '-4px'}}>
                            <Icon >
-                                <i className="fas fa-map-marker-alt"></i>
+                               
                             </Icon>
                           </InputAdornment>
                         )

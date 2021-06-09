@@ -42,10 +42,10 @@ export default function ConfirmMail(props) {
   var msg = null;
   
   var urlParams = new URLSearchParams(window.location.search);
-  var iduser = urlParams.get('id')
+  var iduser = urlParams.get("id");
   console.log(iduser)  
 
-function confirmonclick(){
+window.onload = ()=>{
   fetch("https://localhost:44392/api/Authentication/Inscription/ConfimMail",{
         method: 'POST',
         headers: {
@@ -66,14 +66,14 @@ function confirmonclick(){
 
   return (
     <div>
-      <Header
+    {/*  <Header
         absolute
         color="transparent"
         image={require("assets/img/logo.png")}
       //  brand="Area E-Hire"
         rightLinks={<HeaderLinks />}
         {...rest}
-      />
+      />*/}
       <div
         className={classes.pageHeader}
         style={{
@@ -84,12 +84,15 @@ function confirmonclick(){
       >
         <div className={classes.container}>
           <GridContainer justify="center">
-            <GridItem xs={4} sm={4} md={5}>
+            <GridItem xs={8} sm={8} md={8}>
               <Card className={classes[cardAnimaton]}>
                 <Link to ="/Login" style={{color: "purple",textAlign:"center"}}>
-                       <Button color="transparent" target="_blanck" onClick={confirmonclick}>
-                            Cliquez pour confimer votre compte 
+                   
+                       <Button color="transparent" target="_blanck">
+                       <h4  style={{textTransform:"none"}}><strong>   Votre compte a été activé !<br></br> Maintenant vous pouver vous connecter en cliquant ici !
+                       </strong></h4>
                        </Button>
+                   
                 </Link>
               </Card>
             </GridItem>
