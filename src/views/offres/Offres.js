@@ -219,11 +219,13 @@ export default function Offres(props) {
       j;
     var counts=0;
     for (i = 0; i < words1.length; i++) {
+    //  console.log("i from boucle 1 :",i)
       for (j = 0; j < words2.length; j++) {
+       // console.log("j from boucle 1 :",j)
         if (words1[i].toLowerCase() == words2[j].toLowerCase() && isNaN(words1[i]) && isNaN(words2[j])
          && words1[i].match(/[a-zA-Z]/) && words2[j].match(/[a-zA-Z]/)) {
           counts++;
-          console.log('word ' + words1[i] + ' was found in both strings');
+          console.log('word : "' + words1[i] + ' " was found in both strings');
         }
       }
     }
@@ -248,24 +250,35 @@ export default function Offres(props) {
         cmpts = user.competence.find(
           element => 
           //element.titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().split(" ").includes(o.titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().split(" "))
-          element.value  >= o.value);
-        if (cmpts && verifWords(user.competence[index].titre,o.titre)>0) {
+          element.value >= o.value && verifWords(element.titre,o.titre)>0);
+        if (cmpts) {
           founds2.push(cmpts)
         }
       })
+
       //diplomes
       var founds3 = [];
       var dips;
       // console.log(user.competences)
-      offreclicked.diplome.map((o,index) => {
-       // dips = user.formation.find(element => 
-          //element.normalize("NFD").replace(/[\u0300-\u036f]/g, "").diplome.toUpperCase().includes(o.titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase())
-        //  );
-        if ( verifWords(user.formation[index].diplome,o.titre)>0) {
-          founds3.push(dips)
-        }
-      })
-      console.log("verif displomes length", founds3.length === offreclicked.diplome.length)
+     for(var j = 0; j< offreclicked.diplome.length;j++) {
+        console.log("cpt j :",j)
+        dips = user.formation.find(element => (verifWords(element.diplome,offreclicked.diplome[j].titre)>0)
+        //  element.normalize("NFD").replace(/[\u0300-\u036f]/g, "").diplome.toUpperCase().includes(o.titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase())
+          );
+        //  for(var i = 0;i< user.formation.length;i++){
+         // console.log('index of dip offre : ',index)
+        //  console.log('"cpt i :", : ',i)
+          if (dips
+        //    verifWords(user.formation[i].diplome,offreclicked.diplome[j].titre)>0
+            ) {
+            founds3.push(dips)
+          }
+      }
+      
+      
+      console.log("tab founds 3 of displomes :",founds3)
+      console.log("tab founds 2 of competeces :",founds2)
+      console.log("verif displomes length", founds3.length >= offreclicked.diplome.length)
       console.log("verif langues length", founds1.length === offreclicked.langue.length)
       console.log("verif competences length", founds2.length === offreclicked.competence.length)
       console.log("Compétences :",founds2)
@@ -275,11 +288,11 @@ export default function Offres(props) {
       setA(verif);
       console.log("evaluer expression : ",verif == true  && founds1.length === offreclicked.langue.length &&
       founds2.length === offreclicked.competence.length &&
-      founds3.length === offreclicked.diplome.length)
+      founds3.length >= offreclicked.diplome.length)
       if ( expyears(offreclicked.annee_exp)==true
         && founds1.length === offreclicked.langue.length &&
         founds2.length === offreclicked.competence.length &&
-        founds3.length === offreclicked.diplome.length
+        founds3.length >= offreclicked.diplome.length
         ) {
         if (user.candidatures.find(element => element.offre.id == offreclicked.id) !== undefined) {
           setClassicModal1(false);
@@ -287,7 +300,6 @@ export default function Offres(props) {
           setTextButton("Ok")
           //setClassicModal1(false);
           setClassicModalLogin(true);
-
         } else {
           setClassicModalLogin(false)
           setOffre(offreclicked);
@@ -822,7 +834,7 @@ export default function Offres(props) {
                               >
                                 <h6>
                                   <strong>
-                                    <i class="fas fa-language" style={{ color: "purple" }} ></i>{" "}
+                                    <i className="fas fa-language" style={{ color: "purple" }} ></i>{" "}
                                   Langues demandées{" "}
                                   </strong>
                                 </h6>
