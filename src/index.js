@@ -16,6 +16,7 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 import MyProvider from "MyProvider.js";
 import Logout from "views/LoginPage/Logout.js";
 import Loader from "react-loader-spinner";
+import DetailsOffre from "views/offres/DetailsOffre.js";
 const ChangePassword  = React.lazy(()=>import("views/LoginPage/ChangePassword.js")) ;
 const Components = React.lazy(()=>import( "views/Components/Components.js"))
 const Login = React.lazy(()=>import("views/LoginPage/Login.js"))
@@ -59,7 +60,7 @@ ReactDOM.render(
       <PublicRoute exact path="/Inscription" component={LoginPage} isAuth={!auth} />
       <Route exact path="/" component={Components}/>
       <Route exact  path="/toutes-les-offres" component={Offres} />
-      <ProtectedRoute exact  path="/toutes-les-offres/details/:id" component={Offres} isAuth={auth} />
+      <Route exact  path="/toutes-les-offres/details/:idoffre" component={DetailsOffre}/>
       <ProtectedRoute exact  path="/candidat/mes-candidatures" component={Candidature} isAuth={auth} />
       <PublicRoute exact path="/password-recovery" component={ResetPassword} isAuth={!auth}/>
       <PublicRoute exact path="/change-password" component={ChangePassword} isAuth={!auth}/>

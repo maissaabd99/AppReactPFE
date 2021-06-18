@@ -74,7 +74,8 @@ export default function Experience(props) {
             var div = document.getElementById("exp" + cle);
             console.log(div)
             div.style.display = "none";
-            setDisplayExp(displayexp.concat(response.data.exp));
+            displayexp.unshift(response.data.exp)
+            setDisplayExp([...displayexp]);
 
           }, (error) => {
             console.log(error);
@@ -91,12 +92,13 @@ export default function Experience(props) {
           }).then((response) => {
             console.log(response);
             var div = document.getElementById("exp"+cle);
-            console.log(div)
+            console.log(div);
             div.style.display = "none";
             //delete displayexp[props.id];
             displayexp.splice(props.id,1)
             setDisplayExp([]);
-            setDisplayExp(displayexp.concat(response.data.updatedexp));
+            displayexp.splice(props.id,0,response.data.updatedexp)
+            setDisplayExp([...displayexp]);
 
           }, (error) => {
             console.log(error);

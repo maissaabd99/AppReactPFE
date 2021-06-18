@@ -444,94 +444,6 @@ export default function Offres(props) {
               <div style={{ display: hidden }}>
                 <h3><strong ><span style={{ color: "purple" }}>{nombre}</span> offres trouvées</strong></h3>
               </div>
-              <Card className="animcard" id={"ff"}>
-                      <CardBody>
-                         <Grid container direction="row" justify="space-between">                   
-                          <GridItem xs={12} sm={12} md={8}>
-                          
-                              <Badge color="info">Offre Bientôt expirée</Badge>
-                           
-                            <h6>Publié le 12/03/2021</h6>
-                            <h5>
-                            <strong>maissa this is a test </strong>
-                          </h5>
-                          </GridItem>
-                          <GridItem  xs={12} sm={12} md={3}
-                             style={{
-                              //backgroundColor:"grey",
-                              float: "right",  
-                             display: "flex",
-                             flexDirection: "column",
-                             justifyContent:"center",
-                           //  marginTop:"-25px",
-                            // flexWrap:"wrap",
-                             alignContent: "center",
-                            }}>
-                            <div style={{display:"flex",  flexDirection: "row",alignItems:"center",
-                             justifyContent:"center",marginRight:"-0%",marginTop:"0px"}}>
-                             <FacebookShareButton
-                                url={"https://mail.google.com"}
-                                quote={"Offre disponible sur Area E-hire : \n"}>
-                                <FacebookIcon size={20} round={true}/>
-                              </FacebookShareButton>
-                             <TwitterShareButton
-                                url={"https://localhost:3000/toutes-les-offres"}
-                                quote={"Offre disponible sur Area E-hire : \n"}>
-                                <TwitterIcon  size={20} round={true}></TwitterIcon>
-                              </TwitterShareButton>
-                            </div>
-                          <Button
-                            color="default"
-                            onClick={(e) => {
-                              //setOffre(offres[index]),
-                              /*voirplus(offres[index]);*/
-                            }}
-                            onClick={toggleDrawer("right", true, offres[0])}>
-                            <LibraryBooks className={classes.icon} />
-                            Voir plus
-                          </Button>
-                          {localStorage.getItem('iduser') && bar >= 80 ?
-                            <Button
-                              onClick={() => {
-                              //  setOffreClicked([]);
-                                setOffreClicked([]);
-                               // CheckData(offres[index]);
-                                // fonction2(offres[index]);
-                              }}
-                              color="primary"
-                            >
-                              Postuler
-                            </Button> : [
-                              localStorage.getItem('iduser') && bar < 80 ?
-                                <Button
-                                  onClick={() => {
-                                    setClassicModalLogin(true);
-                                    setMessage("Vous devez avoir un profil complété à 80% au minimum !");
-                                    setLien("/candidat/moncompte");
-                                    setTextButton("Complétez votre profil")
-                                  }}
-                                  color="primary"
-                                >
-                                  Postuler
-                                </Button>
-                                :
-                                <Button
-                                  onClick={() => {
-                                    setClassicModalLogin(true);
-                                    setMessage("Vous devez vous connectez à votre comte pour pouvoir postuler à nos offres !");
-                                    setLien("/login");
-                                    setTextButton("Connectez-vous maintenant");
-                                  }}
-                                  color="primary"
-                                >
-                                  Postuler
-                          </Button>
-                            ]
-                          }
-                          </GridItem>
-                          </Grid>
-                          </CardBody>
-                          </Card>
               {currentOffres.map((item, index, offres) => (
                 (new Date(item.date_expiration) - new Date()) / (1000 * 3600 * 24) > 0 ?
                   <div key={"gg" + item.id}>
@@ -554,8 +466,8 @@ export default function Offres(props) {
                           {item.lieu_travail}
                         </h5>
                           <span style={{ overflow: "hidden" }}>
-                          <h6 id="spandesc">{item.description}</h6>
-                        </span>
+                            <span id="spandesc" dangerouslySetInnerHTML={{__html:item.description}}></span>
+                          </span>
                           </GridItem>
                           <GridItem  xs={12} sm={12} md={3}
                              style={{
@@ -571,12 +483,12 @@ export default function Offres(props) {
                             <div style={{display:"flex",  flexDirection: "row",alignItems:"center",
                              justifyContent:"center",marginRight:"-0%",marginTop:"0px"}}>
                              <FacebookShareButton
-                                url={"https://mail.google.com"}
+                                url={`http://192.168.1.5:3000/toutes-les-offres/details/${item.id}`}
                                 quote={"Offre disponible sur Area E-hire : \n"+item.titre}>
                                 <FacebookIcon size={20} round={true}/>
                               </FacebookShareButton>
                              <TwitterShareButton
-                                url={"https://localhost:3000/toutes-les-offres"}
+                                url={`http://192.168.1.5:3000/toutes-les-offres/details/${item.id}`}
                                 quote={"Offre disponible sur Area E-hire : \n"+item.titre}>
                                 <TwitterIcon  size={20} round={true}></TwitterIcon>
                               </TwitterShareButton>
@@ -802,8 +714,7 @@ export default function Offres(props) {
                             <p>
                               <strong>Description de l'offre</strong>
                               <br></br>
-                              
-                                <h5>{offre.description}</h5>
+                                <span dangerouslySetInnerHTML={{__html:offre.description}}></span>
                             </p>
                             </div>
                             <h6>
@@ -907,8 +818,8 @@ export default function Offres(props) {
                                   }}
                                 >
                                   {/*{item.require===true ? (<h6> (Essentiel) </h6>) : <h6> (Optionnel) </h6>} {" "}*/}
-                                  <h6><span>{item.titre}</span></h6>
-                                  <span style={{ fontSize: "12px", color: "grey" }}>{item.description}</span>
+                                  <div style={{maxWidth:"300px"}}><h6><span>{item.titre}</span></h6></div>
+                                  <div style={{maxWidth:"300px"}}><span style={{ fontSize: "12px", color: "grey" }}>{item.description}</span></div>
                                 </AccordionDetails>
                               ))}
                             </Accordion>
@@ -929,6 +840,9 @@ export default function Offres(props) {
                               <strong>
                                 Date d'expiration : {new Date(offre.date_expiration).toLocaleString('fr-FR').slice(0, 10)}
                               </strong>
+                            </h6>
+                            <h6>
+                              <Link to={"/toutes-les-offres/details/"+offre.id}><Button color="primary"> Voir dans une page à part </Button></Link>
                             </h6>
                           </div> 
                       </SwipeableDrawer>

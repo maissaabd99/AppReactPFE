@@ -83,7 +83,7 @@ export default function Postuler(props){
         <Divider/>
         <DialogActions>
         {props.lien != "" ? 
-        <Link to ={{ pathname : props.lien , state : {from : "toutes-les-offres" }}}>
+        <Link to ={{ pathname : props.lien , state : {from : window.location.href }}}>
             <Button color="primary" > {props.textebutton} </Button> 
         </Link> :
          <Button color="primary" onClick={() => props.setClassicModalLogin(false)}> {props.textebutton} </Button>

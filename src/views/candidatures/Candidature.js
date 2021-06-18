@@ -201,7 +201,8 @@ export default function Candidature(props) {
              (candidatures.map((item, index, candidatures) => (
                   <Card id="gg">
                     <CardBody>
-                   {item.etat.toLowerCase() === "en attente" || item.etat.toLowerCase() === "rejeté"  ?
+                    {/**|| item.etat.toLowerCase() === "rejeté" */}
+                   {item.etat.toLowerCase() === "en attente"   ?
                      <Button justIcon color="danger" style={{float:"right",marginRight:"-40px",marginTop:"-30px"}} 
                      onClick={()=>
                       { setClassicModal1(true);setItem(item)}
@@ -268,7 +269,7 @@ export default function Candidature(props) {
                               :[
                                 item.etat.toLowerCase() === "préaccepté" ? 
                                 <span style={{color:"green"}}><strong>{item.etat.toUpperCase()}</strong>{" "}
-                                  <span style={{color:"grey"}}> ( Vous serez contacté par email/téléphone pour un entretient le plutôt possible )</span></span> 
+                                  <span style={{color:"grey"}}> ( Vous serez contacté par email/téléphone pour un entretien le plutôt possible )</span></span> 
                               : null
                             ]
                             ]
@@ -324,8 +325,10 @@ export default function Candidature(props) {
                         <p>
                           <strong>Description de l'offre</strong>
                           <br></br>
-                            <h5>{offre.description}</h5>
                         </p>
+                        <span style={{ overflow: "hidden" }}>
+                           <span dangerouslySetInnerHTML={{__html:offre.description}}></span>
+                        </span>
                         </div>
                         <h6>
                           <strong>
@@ -446,6 +449,7 @@ export default function Candidature(props) {
                           ></i>{" "}
                           Date d'expiration : {offre.date_expiration}
                         </h6>
+                        <Link to={"/toutes-les-offres/details/"+offre.id}><Button color="primary"> Voir dans une page à part </Button></Link> 
                         </div>
                       </SwipeableDrawer>
                     </React.Fragment>

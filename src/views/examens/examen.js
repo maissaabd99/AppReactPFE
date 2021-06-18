@@ -243,7 +243,6 @@ export default function Examen(props) {
           console.log(error)
         });
      }
-
     const[score,setScore] = useState()
     const[loading,setLoading] = useState(true);
 
@@ -267,8 +266,7 @@ export default function Examen(props) {
 
   return (
     <div>
-    {loading === false ?
-      verif === true  ?
+    {verif === true  ?
       <React.Fragment>
       <Parallax style={{ height: "100px" }} /> 
       <Snackbar
@@ -398,9 +396,9 @@ export default function Examen(props) {
                 <CardBody>
                    <h2>Votre scrore final est <span style={{color:"purple"}}><strong>{score} / {noteQCMTotal}</strong></span></h2>
                    {Number(score) >= (Number(noteQCMTotal)/2 )?  
-                     <h4><span> <strong>Félicitations ! Vous avez eu la moyenne de la note !
+                     <h4><span> <strong>Félicitations ! Vous avez réussi votre examen !
                        <span style={{fontSize:50}}>&#127881;</span><br/>
-                       Vous serez contacté par le responsable RH le plutôt possible pour un entretient .</strong>
+                       Vous serez contacté par le responsable RH le plutôt possible pour un entretien .</strong>
                         <br/><br/> <Button color="primary" 
                         onClick={()=>{
                         //  document.getElementById('divresult').style.display="none";
@@ -409,7 +407,7 @@ export default function Examen(props) {
                           Voir la correction 
                         </Button></span></h4>
                     :
-                   <span><h4><strong>Désolé ! Vous n'avez pa eu la moyenne de la note ! </strong>
+                   <span><h4><strong>Désolé ! Vous n'avez pas réussi votre examen ! </strong>
                    <span style={{fontSize:30}}>&#128577;</span></h4><br/>
                    <Link to={"/toutes-les-offres"} style={{textDecoration:"none"}}><Button>Essayez d'autres offres disponibles </Button></Link></span>}
                    <div id="divcorrection" style={{display:"none"}}>
@@ -420,19 +418,17 @@ export default function Examen(props) {
                 </CardBody>
               </Card>
             </div>
-
             </div>
             </GridItem>
           </Grid>
         </div>
       </div>
-      
       <Footer />
       </React.Fragment>
       : 
-      <NotFound404/>
-      :
-      <Loader type="Bars" color="purple" height={50} width={50} style={{marginTop:"20%",marginLeft:"50%"}}></Loader>
+      <NotFound404>
+{      /*<Loader type="Bars" color="purple" height={50} width={50} style={{marginTop:"20%",marginLeft:"50%"}}></Loader>
+*/}       </NotFound404>
     }
     </div>
   );

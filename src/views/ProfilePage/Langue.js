@@ -55,7 +55,8 @@ export default function Langue(props) {
         var div= document.getElementById("lang"+cle);
         console.log(div);
         div.style.display="none";   
-        setDisplay(update.concat(response.data.langue)); 
+        update.unshift(response.data.langue)
+        setDisplay([...update]); 
       }, (error) => {
       console.log(error);
       })
@@ -77,7 +78,8 @@ export default function Langue(props) {
         //setDisplay(delete update[props.id]);  
         update.splice(props.id,1)
         setDisplay([])   
-        setDisplay(update.concat(response.data.languemodifier));   
+        update.splice(props.id,0,response.data.languemodifier)
+        setDisplay([...update]);   
     }, (error) => {
       console.log(error);
     })
