@@ -1,0 +1,41 @@
+.animcard{
+    /*width:auto;*/
+    transition: 0.4s ease;
+    border:1px solid grey;
+    
+}
+.animcard:hover{
+    transform: scale(1.01);
+   color:grey
+}
+
+input{
+    border:"none"
+    /*color:purple*/
+}
+#spandesc{
+    text-transform: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%;
+    height: 20px;
+    text-align: left;
+    display: block;
+  }
+  .aaa {
+      background-color:purple;
+  }
+
+  .centerText{
+    text-align: center;
+  }
+  .boldText{
+      font-weight: bold;
+  }
+
+  .flexOne{
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+  }
