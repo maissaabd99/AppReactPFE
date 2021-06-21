@@ -3,6 +3,7 @@
   "version": "1.9.0",
   "description": "Material Kit React. Coded by Creative Tim",
   "private": true,
+  
   "main": "src/index.js",
   "dependencies": {
     "@material-ui/core": "4.10.0",
@@ -24,6 +25,7 @@
     "react-custom-share": "^0.4.8",
     "react-datetime": "2.16.3",
     "react-dom": "16.13.1",
+    "react-helmet": "^6.1.0",
     "react-js-pagination": "^3.0.3",
     "react-loader-spinner": "^4.0.0",
     "react-loadingmask": "^4.0.6",

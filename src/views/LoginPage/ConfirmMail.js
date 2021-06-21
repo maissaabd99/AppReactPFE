@@ -25,6 +25,7 @@ import { Phone } from "@material-ui/icons";
 import { Redirect } from "react-router";
 import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import authAxios from "authAxios";
 
 const useStyles = makeStyles(styles);
 
@@ -37,43 +38,40 @@ export default function ConfirmMail(props) {
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
-  const [email, setEmail] = useState("");
+  const [msg, setMsg] = useState("");
   const [password, setPassword] = useState("");
-  var msg = null;
   
   var urlParams = new URLSearchParams(window.location.search);
   var iduser = urlParams.get("id");
-  console.log(iduser)  
+  var token = urlParams.get("token");
+  console.log(token)  
+  const[loading ,setLoading] = useState()
 
-window.onload = ()=>{
-  fetch("https://localhost:44392/api/Authentication/Inscription/ConfimMail",{
-        method: 'POST',
-        headers: {
-       'Content-Type': 'application/json'
-     },
-     body: JSON.stringify({ 
-      UserName:iduser   
+  useEffect(() => {
+    authAxios.post("Authentication/Inscription/ConfimMail",
+    //{headers: {"Access-Control-Allow-Origin": "*"}},
+      {
+       nom:token,
+       UserName:iduser   
       })
-    })
-     .then(data => data.json())
-     .then((result)=>{
-            console.log(result)   
-     },
-     (error)=>{
-       console.log(error)
-     })
-}
-
+       .then((result)=>{
+          console.log(result.data)  
+          setLoading(true); 
+      },
+       (error)=>{
+        console.log(error.response)
+        if(error.response.data.status === "401")
+        {
+          setMsg(error.response.data.message)
+        }else{
+          setMsg("Une erreure s'est produite !")
+        }
+        setLoading(false);
+      });
+  }, [])
+  
+  
   return (
-    <div>
-    {/*  <Header
-        absolute
-        color="transparent"
-        image={require("assets/img/logo.png")}
-      //  brand="Area E-Hire"
-        rightLinks={<HeaderLinks />}
-        {...rest}
-      />*/}
       <div
         className={classes.pageHeader}
         style={{
@@ -86,20 +84,27 @@ window.onload = ()=>{
           <GridContainer justify="center">
             <GridItem xs={8} sm={8} md={8}>
               <Card className={classes[cardAnimaton]}>
+               {loading === true ? 
                 <Link to ="/Login" style={{color: "purple",textAlign:"center"}}>
-                   
                        <Button color="transparent" target="_blanck">
                        <h4  style={{textTransform:"none"}}><strong>   Votre compte a été activé !<br></br> Maintenant vous pouver vous connecter en cliquant ici !
                        </strong></h4>
                        </Button>
-                   
-                </Link>
+                </Link> : null
+               }
+               {loading === false ? 
+                
+                       <Button color="transparent" target="_blanck">
+                       <h4  style={{textTransform:"none"}}><strong>   {msg}
+                       </strong></h4>
+                       </Button>
+                : null
+               }
               </Card>
             </GridItem>
           </GridContainer>
         </div>
         <Footer whiteFont />
       </div>
-    </div>
   );
 }

@@ -55,7 +55,7 @@ import { now } from "moment";
 import Badge from "components/Badge/Badge";
 import { MyContext } from "index";
 import clsx from 'clsx';
-import {FacebookShareCount,FacebookShareButton,FacebookIcon,TwitterIcon,TwitterShareButton} from "react-share";
+import {FacebookShareCount,FacebookShareButton,FacebookIcon,TwitterIcon,TwitterShareButton, LinkedinShareButton, LinkedinIcon} from "react-share";
 import Loader from "react-loader-spinner";
 import { Texture } from "@material-ui/icons";
 
@@ -482,16 +482,28 @@ export default function Offres(props) {
                             }}>
                             <div style={{display:"flex",  flexDirection: "row",alignItems:"center",
                              justifyContent:"center",marginRight:"-0%",marginTop:"0px"}}>
-                             <FacebookShareButton
-                                url={`http://192.168.1.5:3000/toutes-les-offres/details/${item.id}`}
-                                quote={"Offre disponible sur Area E-hire : \n"+item.titre}>
-                                <FacebookIcon size={20} round={true}/>
-                              </FacebookShareButton>
-                             <TwitterShareButton
-                                url={`http://192.168.1.5:3000/toutes-les-offres/details/${item.id}`}
-                                quote={"Offre disponible sur Area E-hire : \n"+item.titre}>
-                                <TwitterIcon  size={20} round={true}></TwitterIcon>
-                              </TwitterShareButton>
+                            <FacebookShareButton
+                      
+                      hashtag="#areaconsulting"
+                      url={`http://13df0c165b7a.ngrok.io/toutes-les-offres/details/${item.id}`}
+                      quote={"Offre disponible sur Area E-hire : \n"+item.titre}
+                      >
+                      <FacebookIcon size={25} round={true}/>
+                    </FacebookShareButton>
+                    <TwitterShareButton
+                     // hashtags="#areaconsulting"
+                      title={"Offre disponible sur Area E-Hire : \n "+item.titre}
+                      url={`http://13df0c165b7a.ngrok.io/toutes-les-offres/details/${item.id}`}
+                      via={"AreaEHire"}
+                     >
+                      <TwitterIcon  size={25} round={true}></TwitterIcon>
+                    </TwitterShareButton> 
+                    <LinkedinShareButton
+                    title={"Offre disponible sur Area E-Hire : \n "+item.titre}
+                    url={`http://13df0c165b7a.ngrok.io/toutes-les-offres/details/${item.id}`}
+                    description = "Rejoignez-nous pour une meilleure expérience ! this is some description for sharing an oppirtunity job from Area E-Hire on Linkedin web site !">
+                      <LinkedinIcon size={25} round={true}></LinkedinIcon>
+                    </LinkedinShareButton>
                             </div>
                           <Button
                             color="default"

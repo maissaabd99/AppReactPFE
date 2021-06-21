@@ -73,11 +73,11 @@ export default function Login(props) {
             console.log(result)
             setLoading(false);
           }else{
-            data["access_token"] = result.token;
+          /*  data["access_token"] = result.token;
             data["refresh_token"] = result.refreshToken;
             data["iduser"] = result.user.id;
-            Object.freeze(data)
-            console.log("data after login : ",data)
+            Object.freeze(data)*/
+           // console.log("data after login : ",data)
             document.getElementById('msgerror').textContent="";
             console.log(result)
             localStorage.setItem("iduser",result.user.id);

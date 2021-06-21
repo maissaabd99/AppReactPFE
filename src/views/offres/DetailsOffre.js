@@ -28,6 +28,7 @@ import CustomInput from "components/CustomInput/CustomInput";
 import { Close } from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
 import img from "assets/img/logo.png";
+import {Helmet} from "react-helmet";
 
 //import MuiAlert from '@material-ui/lab/Alert';
 const useStyles = makeStyles(styles);
@@ -275,16 +276,11 @@ function postuler(e) {
 
     return (
       <div>
-      <head>
-       <MetaTags>
-            <title>{offrebyid.titre}</title>
-            <meta property="og:description" content="Some description." />
+       {/*<MetaTags>
             <meta property="og:title" content="Area E-Hire" /> 
-            <meta property="og:type" content="web application" />
-            <meta property="og:url" content="https://pypolo.com" />
-            <meta property="og:image" content="https://www.telotrovo.it/wp-content/uploads/2016/02/siteimage.jpg" />
-          </MetaTags>
-      </head>
+            <meta property="og:url" content="http://13df0c165b7a.ngrok.io" />
+            <meta property="og:image" content="http://13df0c165b7a.ngrok.io/logo.png" />
+          </MetaTags>*/}
         <Parallax style={{ height: "100px" }} /> 
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div style={{ backgroundColor: "#F0F0F0" }}>
@@ -306,7 +302,6 @@ function postuler(e) {
           </Link>
         </Alert>
       </Snackbar>
-     
             <Grid  container direction="row" justify="center">
               <GridItem xs={12} sm={12} md={9}>
               <div style={{display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center" }}>
@@ -373,18 +368,25 @@ function postuler(e) {
                   }}>
                    <div className="flexOne">
                     <FacebookShareButton
+                      
                       hashtag="#areaconsulting"
-                      url={`http://192.168.1.5:3000/toutes-les-offres/details/${offrebyid.id}`}
-                      quote={"Offre disponible sur Area E-hire : \n"+offrebyid.titre}>
+                      url={`http://13df0c165b7a.ngrok.io/toutes-les-offres/details/${offrebyid.id}`}
+                      quote={"Offre disponible sur Area E-hire : \n"+offrebyid.titre}
+                      >
                       <FacebookIcon size={40} round={true}/>
                     </FacebookShareButton>
                     <TwitterShareButton
-                      url={`http://192.168.1.5:3000/toutes-les-offres/details/${offrebyid.id}`}
-                      quote={"Offre disponible sur Area E-hire : \n"+offrebyid.titre}>
+                     // hashtags="#areaconsulting"
+                      title={"Offre disponible sur Area E-Hire : \n "+offrebyid.titre}
+                      url={`http://13df0c165b7a.ngrok.io/toutes-les-offres/details/${offrebyid.id}`}
+                      via={"AreaEHire"}
+                     >
                       <TwitterIcon  size={40} round={true}></TwitterIcon>
                     </TwitterShareButton> 
-                    <LinkedinShareButton url={`http://192.168.1.5:3000/toutes-les-offres/details/${offrebyid.id}`}
-                      quote={"Offre disponible sur Area E-hire : \n"+offrebyid.titre}>
+                    <LinkedinShareButton 
+                    title={"Offre disponible sur Area E-Hire : \n "+offrebyid.titre}
+                    url={`http://13df0c165b7a.ngrok.io/toutes-les-offres/details/${offrebyid.id}`}
+                    description = "Rejoignez-nous pour une meilleure expérience ! this is some description for sharing an oppirtunity job from Area E-Hire on Linkedin web site !">
                       <LinkedinIcon  size={40} round={true}></LinkedinIcon>
                     </LinkedinShareButton>
                    </div>
