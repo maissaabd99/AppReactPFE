@@ -14,6 +14,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 import Login from "./Login";
+import authAxios from "../../authAxios"
 
 //import {MyContext} from "index"
 
@@ -22,12 +23,29 @@ const useStyles = makeStyles(styles);
 
 export default function Logout(props) {
     function logout(){
+             // localStorage.clear();
+
+    var iduser = localStorage.getItem("iduser")
+    console.log(iduser);
+    //localStorage.clear();
+    authAxios.post(`Authentication/logout/${iduser}`,{
+          "access_token":localStorage.getItem('access_token'),
+          "refresh_token" :localStorage.getItem('refresh_token')
+        })
+        .then((res) => {
+        console.log(res.data)
+        window.location.href="/login"  
         localStorage.clear();
+      },
+      (error) => {
+        alert(error)
+        console.log(error);
+      });  
         /*localStorage.setItem('UserEmail',"");
          localStorage.setItem('Usernom',"");
          localStorage.setItem('Userprenom',"");
          localStorage.setItem('access_token',"");*/
-         window.location.href="/login"      
+           
    }
     useEffect(() => {
         logout()

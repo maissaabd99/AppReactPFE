@@ -17,6 +17,11 @@ import MyProvider from "MyProvider.js";
 import Logout from "views/LoginPage/Logout.js";
 import Loader from "react-loader-spinner";
 import DetailsOffre from "views/offres/DetailsOffre.js";
+import { Provider } from "react-redux"
+import store from "./store"
+import { UserContext } from "UserContext.js";
+
+
 const ChangePassword  = React.lazy(()=>import("views/LoginPage/ChangePassword.js")) ;
 const Components = React.lazy(()=>import( "views/Components/Components.js"))
 const Login = React.lazy(()=>import("views/LoginPage/Login.js"))
@@ -29,7 +34,6 @@ const Examen = React.lazy(()=> import("views/examens/examen.js")) ;
 const ResetPassword = React.lazy(()=> import("views/LoginPage/ResetPassword")) ;
 
 var bar = 0 ;
-export const MyContext = React.createContext();
 
 var hist = createBrowserHistory();
 
@@ -43,14 +47,15 @@ if(localStorage.length !=0 && localStorage.getItem('access_token') != null && lo
    }else{
      auth=false
    }
-
 console.log("auth from index",auth)
  {/* <MyProvider>*/}
 ReactDOM.render(
-
+  <MyProvider>
   <Router history={hist}>
+
   <Suspense fallback={<Loader type="Bars" color="purple" height={50} width={50} style={{marginTop:"20%",marginLeft:"45%"}}></Loader>}>
   <Header color="white" isAuth = {auth} fixed rightLinks={<HeaderLinks isAuth = {auth}/>}/>
+ 
     <Switch>
       <PublicRoute  path="/Inscription/Message-confirmation" component={MsgConfirmation} isAuth={!auth}/>
       <PublicRoute exact path="/Inscription/Confirmation-compte" component={ConfirmMail} isAuth={!auth}/>
@@ -67,10 +72,11 @@ ReactDOM.render(
       <ProtectedRoute exact  path="/logout" component={Logout} isAuth={auth} />
       <ProtectedRoute exact  path="/candidat/mes-candidatures/examen/:idcandidature/:idexam" component={Examen} isAuth={auth} />  
       <Route path="*" component={NotFound404}/>
+
     </Switch>
     </Suspense>
   </Router>  
-
+  </MyProvider>
   , 
   document.getElementById("root")
 );

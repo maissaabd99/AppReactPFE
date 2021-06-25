@@ -29,6 +29,7 @@ import { Close } from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
 import img from "assets/img/logo.png";
 import {Helmet} from "react-helmet";
+import NotFound404 from "../../NotFound404"
 
 //import MuiAlert from '@material-ui/lab/Alert';
 const useStyles = makeStyles(styles);
@@ -88,7 +89,8 @@ export default function DetailsOffre(props) {
   const [email, setEmail] = useState(user.email);
   const [desc, setDesc] = useState();
   //********************************************************* */
-const[loading,setLoading] = useState(false);
+const[loading,setLoading] = useState();
+const[ok,setOk] = useState();
 const[offrebyid,setOffreById] = useState([]);
 const[langues,setLangues] = useState([]);
 const[competences,setCompetences] = useState([]);
@@ -105,11 +107,13 @@ var id = localStorage.getItem("iduser");
     setLoading(false);
     console.log(res.data)
     setOffreById(res.data);
+    setOk(true)
     setLangues(res.data.langue);
     setCompetences(res.data.competence);
     setDiplomes(res.data.diplome);
   },
   (error) => {
+    setOk(false)
     setLoading(false);
     console.log(error);
   });
@@ -275,6 +279,9 @@ function postuler(e) {
 }
 
     return (
+    offrebyid == 0 && loading ===false ? 
+      <NotFound404/>
+    :
       <div>
        {/*<MetaTags>
             <meta property="og:title" content="Area E-Hire" /> 
@@ -306,8 +313,10 @@ function postuler(e) {
               <GridItem xs={12} sm={12} md={9}>
               <div style={{display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center" }}>
               <Card>
-                <CardBody>
                 <Loader type="ThreeDots" color="purple" height={60} width={60} style={{marginLeft:"45%"}}  visible={loading}/>   
+                {loading === false ?
+                  
+                <CardBody>
                   <h4 className="centerText"><strong>{offrebyid.titre}</strong></h4>
                   {(new Date(offrebyid.date_expiration) - new Date()) / (1000 * 3600 * 24) < 3 ?
                     <Badge color="info">Offre Bientôt expirée</Badge> : null
@@ -368,7 +377,6 @@ function postuler(e) {
                   }}>
                    <div className="flexOne">
                     <FacebookShareButton
-                      
                       hashtag="#areaconsulting"
                       url={`http://13df0c165b7a.ngrok.io/toutes-les-offres/details/${offrebyid.id}`}
                       quote={"Offre disponible sur Area E-hire : \n"+offrebyid.titre}
@@ -376,7 +384,7 @@ function postuler(e) {
                       <FacebookIcon size={40} round={true}/>
                     </FacebookShareButton>
                     <TwitterShareButton
-                     // hashtags="#areaconsulting"
+                      hashtags={["areaconsulting"]}
                       title={"Offre disponible sur Area E-Hire : \n "+offrebyid.titre}
                       url={`http://13df0c165b7a.ngrok.io/toutes-les-offres/details/${offrebyid.id}`}
                       via={"AreaEHire"}
@@ -435,6 +443,7 @@ function postuler(e) {
                   </GridItem>
                   </div>
                 </CardBody>
+                :null}
               </Card>
               </div>
               </GridItem>

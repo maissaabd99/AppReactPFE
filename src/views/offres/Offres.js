@@ -53,7 +53,7 @@ import { Link } from "react-router-dom";
 import Postuler from "./Postuler";
 import { now } from "moment";
 import Badge from "components/Badge/Badge";
-import { MyContext } from "index";
+import  MyContext  from "MyProvider";
 import clsx from 'clsx';
 import {FacebookShareCount,FacebookShareButton,FacebookIcon,TwitterIcon,TwitterShareButton, LinkedinShareButton, LinkedinIcon} from "react-share";
 import Loader from "react-loader-spinner";

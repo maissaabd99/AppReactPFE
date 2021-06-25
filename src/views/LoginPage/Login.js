@@ -25,12 +25,14 @@ import { Link,Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import data from "../../data.js"
 import Loader from "react-loader-spinner";
-//import {MyContext} from "index"
+import {UserContext} from "../../UserContext"
+import MyContext from "MyProvider";
 
 const useStyles = makeStyles(styles);
 
-
 export default function Login(props) {
+  //const {user , setUser} = useContext(MyContext)
+  //console.log(user)
   var hist = createBrowserHistory();
    props={...msg};
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
@@ -78,11 +80,12 @@ export default function Login(props) {
             data["iduser"] = result.user.id;
             Object.freeze(data)*/
            // console.log("data after login : ",data)
+           //setUser(result.user)
             document.getElementById('msgerror').textContent="";
             console.log(result)
             localStorage.setItem("iduser",result.user.id);
             localStorage.setItem('access_token',result.token);
-            localStorage.setItem('refresh_token',result.refreshToken);
+            localStorage.setItem('refresh_token',result.refreshtoken);
             setLoading(false)
            // context.setId(result.user.id)
           //  console.log(context)

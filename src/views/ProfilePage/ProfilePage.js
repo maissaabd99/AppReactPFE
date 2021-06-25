@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -39,6 +39,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Offres from "../offres/Offres";
 import { Alert } from "@material-ui/lab";
 import dataUser from "../../data.js"
+import MyContext from "MyProvider"
 
 export const BarContext = React.createContext()
 
@@ -80,6 +81,7 @@ const useStyles = makeStyles(styles,(theme)=>({
 }));
 
 function ProfilePage(props) {
+
  // history.pushState("bar","bar","/toutes-les-offres")
   const classes = useStyles();
   const { data, cle, ...rest } = props;
@@ -90,8 +92,8 @@ function ProfilePage(props) {
   );
   var [profile, setProfile] = useState(profile1);
   //get CV user
-  function getUserCV()
-{  authAxios
+  async function getUserCV()
+{  const a = await authAxios
     .get("UplodFiles/" + localStorage.getItem("iduser"), {
       method: "GET",
     })
@@ -106,8 +108,8 @@ function ProfilePage(props) {
       }
     );}
   //get photo user
-  function getUserPhoto()
-  {authAxios
+  async function getUserPhoto()
+  {await authAxios
     .get("UplodFiles/getUploadPhoto/" + localStorage.getItem("iduser"), {
       method: "GET",
     })
@@ -121,6 +123,10 @@ function ProfilePage(props) {
       }
     );
 }
+
+//const {user1 , setUser1} = useContext(MyContext)
+//console.log(user1)
+
   //get user languages
   const [display, setDisplay] = useState([]);
 
@@ -236,15 +242,23 @@ function ProfilePage(props) {
 
   //get loggedin user
   const [user, setUser] = useState([]);
-  function getUser() {
-    authAxios
+  async function getUser() {
+    await authAxios
       .get("Candidats/" + localStorage.getItem("iduser"), {
         method: "GET",
       })
       .then(
         (res) => {
-       //   console.log(res.data);
+          console.log(res.data);
           setUser(res.data);
+          setDisplay(res.data.langue)
+          setDisplayComp(res.data.competence)
+          setDisplayEtude(res.data.formation)
+          setDisplayExp(res.data.experience_prof)
+          if(res.data.linkedin!=null){
+            setDisplaylinkedin(displaylinkedin.concat(res.data.linkedin));
+          }
+          setDisplayHobby(res.data.hobby) 
         },
         (error) => {
           console.log(error);
@@ -304,12 +318,12 @@ function ProfilePage(props) {
 
   useEffect(() => {
     progression();
-    getAllFormations();
+  /*  getAllFormations();
     getAllLanguages();
     getAllExperiences();
     getAllCompetences();
     getAllHobbies();
-    getLinkedin();
+    getLinkedin();*/
    
   }, []);
 
@@ -438,12 +452,12 @@ function ProfilePage(props) {
   var [NomFichierFinal, setNomFichierFinal] = useState();
   var [hidebutton, setHidebutton] = useState(true);
 
-  const onFileUpload = (event) => {
+   const  onFileUpload = (event) => {
     const formData = new FormData();
     if (fichier != null) {
       formData.append("file", document.getElementById("cv").files[0]);
       formData.append("useremail", localStorage.getItem("iduser"));
-      authAxios
+       authAxios
         .post("UplodFiles/Upload", formData, {
           onUploadProgress: (ProgressEvent) => {
             const { loaded, total } = ProgressEvent;
@@ -570,11 +584,11 @@ function ProfilePage(props) {
     document.getElementById("editicon").style.visibility = "visible";
   }
 
-  function handleEdit() {
+  async function handleEdit() {
     var id = localStorage.getItem("iduser");
     console.log(etatMatri);
     console.log(genre)
-    authAxios
+    await authAxios
       .put("Candidats/" + id, {
         nom: nom,
         prenom: prenom,
