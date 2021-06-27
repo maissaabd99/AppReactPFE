@@ -42,6 +42,8 @@ export default function LoginPage(props) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [password1, setPassword1] = useState("");
+
 
   const [valnom,setValNom] =  useState(false);
   const [valpren,setvalpren] =  useState(false);
@@ -84,7 +86,8 @@ export default function LoginPage(props) {
       document.getElementById('errorusername').textContent="Nom d'utilisateur doit etre entre 3 et 15 caractères";
       setvalusername (false);
     }else{
-      if(document.getElementById('username').value.length<=15 && document.getElementById('username').value.length>=3){
+      if(document.getElementById('username').value.length<=15 && document.getElementById('username').value.length>=3 
+   ){
         document.getElementById('errorusername').textContent="";
         setvalusername (true);
       }     
@@ -107,13 +110,25 @@ export default function LoginPage(props) {
     } 
     console.log(valpassword)   
   }
+  //valid password 2
+  function validatepass1(){
+    if(password === password1){
+      document.getElementById('errorpassword').textContent="";
+      setvalpassword (true);
+
+    }else{
+      document.getElementById('errorpassword').textContent="Les mots de passes doivent correspondrent !";
+      setvalpassword (false);
+    } 
+    console.log(valpassword)   
+  }
   function handleSubmit(e) {
     e.preventDefault();
-    setLoading(true)
     document.getElementById('erroremail').textContent="";
     document.getElementById('errorusername').textContent="";
      console.log(valpren)
-    if((valnom===true) && (valpren===true) && (valusername===true) && (valpassword===true)){    
+    if((valnom===true) && (valpren===true) && (valusername===true) && (valpassword===true) ){    
+      setLoading(true)
      fetch("https://localhost:44392/api/Authentication/Register",{
         method: 'POST',
         headers: {
@@ -160,12 +175,6 @@ export default function LoginPage(props) {
 
   return (
     <div>
-     {/* <Header
-        absolute
-        color="transparent"
-        rightLinks={<HeaderLinks />}
-        {...rest}
-      />*/}
       <div
         className={classes.pageHeader}
         style={{
@@ -185,9 +194,11 @@ export default function LoginPage(props) {
                   <CardBody>
                   <Loader type="Bars" color="purple" height={30} width={30} style={{marginLeft:"45%"}} visible={loading}></Loader>
                     <CustomInput
-                      labelText="Nom ..."
+                      labelText="Nom"
                       id="nom"
                       value={nom}
+                      onBlur ={()=>setValNom ==true ? document.getElementById('errornom').textContent="" : null}
+                      onFocus={validatenom}
                       className="nom"
                       onChange = { e =>setNom(e.target.value)}
                       onKeyUp ={validatenom}
@@ -206,9 +217,11 @@ export default function LoginPage(props) {
                     />
                     <p style={{color:"red"}} id="errornom"></p>
                     <CustomInput
-                      labelText="Prénom..."
+                      labelText="Prénom"
                       id="prenom"
                       value={prenom}
+                      onBlur ={()=>setvalpren ==true ? document.getElementById('errorpren').textContent="" : null}
+                      onFocus={validateprenom}
                       onKeyUp={validateprenom}
                       onChange={e => setPrenom(e.target.value)}
                       formControlProps={{
@@ -225,7 +238,8 @@ export default function LoginPage(props) {
                     />
                     <p style={{color:"red"}} id="errorpren"></p>
                      <CustomInput 
-                      labelText="Email ..."
+                      labelText="Adresse email : exemple@domaine.com"
+                      onKeyUp ={()=>document.getElementById('erroremail').textContent=""}
                       id="email"
                       value={email}
                       onChange={e =>setEmail(e.target.value)}
@@ -244,8 +258,10 @@ export default function LoginPage(props) {
                     />
                     <p style={{color:"red"}} id="erroremail"></p>
                      <CustomInput
-                      labelText="Username ..."
+                      labelText="Nom d'utilisateur ..."
                       id="username"
+                      onBlur ={()=>setvalusername ==true ? document.getElementById('errorusername').textContent="" : null}
+                      onFocus={validateusername}
                       onKeyUp={validateusername}
                       value={username}
                       onChange={e => setUsername(e.target.value)}
@@ -256,18 +272,17 @@ export default function LoginPage(props) {
                         type: "text",
                         endAdornment: (
                           <InputAdornment position="end" style={{marginTop: '-4px'}}>
-                           <Icon >
-                               
-                            </Icon>
                           </InputAdornment>
                         )
                       }}
                     />
                     <p style={{color:"red"}} id="errorusername"></p>
                     <CustomInput
-                      labelText="Password"
+                      labelText="Mot de passe"
                       id="pass"
                       value={password}
+                      onBlur ={()=>setvalpassword ==true ? document.getElementById('errorpassword').textContent="" : null} 
+                      onFocus={validatepass}
                       onKeyUp={validatepass}
                       onChange={e => setPassword(e.target.value)}
                       formControlProps={{
@@ -286,7 +301,28 @@ export default function LoginPage(props) {
                       }}
                     />
                     <p style={{color:"red"}} id="errorpassword"></p>
-
+                    <CustomInput
+                      labelText="Confimer mot de passe"
+                      id="pass1"
+                      value={password1}
+                      onBlur ={()=>setvalpassword ==true ? document.getElementById('errorpassword').textContent="" : null} 
+                      onKeyUp={validatepass1}
+                      onChange={e => setPassword1(e.target.value)}
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "password",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Icon className={classes.inputIconsColor}>
+                              lock_outline
+                            </Icon>
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off"
+                      }}
+                    />
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button color="primary" size="lg" type="submit">

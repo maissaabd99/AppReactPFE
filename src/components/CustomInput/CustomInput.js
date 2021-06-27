@@ -21,6 +21,8 @@ export default function CustomInput(props) {
     id,
     onChange,
     onKeyUp,
+    onBlur,
+    onFocus,
     labelProps,
     inputProps,
     error,
@@ -77,6 +79,8 @@ export default function CustomInput(props) {
           underline: underlineClasses
         }}
         id={id}
+        onBlur={onBlur}
+        onFocus={onFocus}
         onKeyUp={onKeyUp}
         onChange={onChange}
         value={value}

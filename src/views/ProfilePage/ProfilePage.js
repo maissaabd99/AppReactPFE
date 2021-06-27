@@ -3,12 +3,10 @@ import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
-import Header from "components/Header/Header.js";
 import Button from "components/CustomButtons/Button.js";
 import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
 import profile1 from "assets/img/anonymous.jpg";
 import "./stylee.css";
@@ -19,11 +17,9 @@ import Compétence from "./Compétence";
 import Hobbies from "./Hobbies";
 import Linkedin from "./Linkedin";
 import Card from "components/Card/Card.js";
-import imagesStyles from "assets/jss/material-kit-react/imagesStyles";
 import authAxios from "../../authAxios";
 import DisplayLangue from "./Display/DisplayLang";
-import {FormControl,FormControlLabel,Grid,IconButton,InputAdornment,MenuItem,Radio,RadioGroup,Snackbar,TextField,withStyles,} from "@material-ui/core";
-import SectionNotifications from "views/Components/Sections/SectionNotifications";
+import {FormControl,FormControlLabel,Grid,InputAdornment,MenuItem,Radio,RadioGroup,Snackbar,TextField} from "@material-ui/core";
 import DisplayExp from "./Display/DisplayExp";
 import DisplayCompetence from "./Display/DisplayCompetence";
 import DisplayHobby from "./Display/DisplayHobby";
@@ -35,15 +31,11 @@ import CardBody from "components/Card/CardBody";
 import CustomInput from "components/CustomInput/CustomInput";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import CloseIcon from "@material-ui/icons/Close";
-import Offres from "../offres/Offres";
 import { Alert } from "@material-ui/lab";
-import dataUser from "../../data.js"
-import MyContext from "MyProvider"
+import Loader from "react-loader-spinner";
+
 
 export const BarContext = React.createContext()
-
-//import {ReactPhoneInput} from '@material-ui/icons';
 const useStyles = makeStyles(styles,(theme)=>({
   root: {
     '&:hover': {
@@ -81,8 +73,6 @@ const useStyles = makeStyles(styles,(theme)=>({
 }));
 
 function ProfilePage(props) {
-
- // history.pushState("bar","bar","/toutes-les-offres")
   const classes = useStyles();
   const { data, cle, ...rest } = props;
   const imageClasses = classNames(
@@ -123,132 +113,27 @@ function ProfilePage(props) {
       }
     );
 }
-
-//const {user1 , setUser1} = useContext(MyContext)
-//console.log(user1)
-
-  //get user languages
-  const [display, setDisplay] = useState([]);
-
-  function getAllLanguages() {
-    authAxios
-      .get("Candidats/getLanguages/" + localStorage.getItem("iduser"), {
-        method: "GET",
-      })
-      .then(
-        (res) => {
-         // console.log(res.data.languages);
-          setDisplay(display.concat(res.data.languages));
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-
-  //get user experiences
-  const [displayexp, setDisplayExp] = useState([]);
-  function getAllExperiences() {
-    authAxios
-      .get("Candidats/getExperiences/" + localStorage.getItem("iduser"), {
-        method: "GET",
-      })
-      .then(
-        (res) => {
-          //  console.log(res.data.languages)
-          setDisplayExp(displayexp.concat(res.data.exps));
-          //progression()
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-
-  //get user competences
-  const [displaycomp, setDisplayComp] = useState([]);
-  function getAllCompetences() {
-    authAxios
-      .get("Competence/getAllCompetences/" + localStorage.getItem("iduser"), {
-        method: "GET",
-      })
-      .then(
-        (res) => {
-         // console.log(res.data.comps);
-          setDisplayComp(displaycomp.concat(res.data.comps));
-          //progression()
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-
-  //get user Hobbies
-  const [displayhobby, setDisplayHobby] = useState([]);
-  function getAllHobbies() {
-    authAxios
-      .get("Hobby/getAllHobbies/" + localStorage.getItem("iduser"), {
-        method: "GET",
-      })
-      .then(
-        (res) => {
-          //console.log(res.data.hobbies)
-          setDisplayHobby(displayhobby.concat(res.data.hobbies));
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-  //get user etudes
-  const [displayetude, setDisplayEtude] = useState([]);
-  function getAllFormations() {
-    authAxios
-      .get("Formations/getAllFormations/" + localStorage.getItem("iduser"), {
-        method: "GET",
-      })
-      .then(
-        (res) => {
-         // console.log(res.data.formations);
-          setDisplayEtude(displayetude.concat(res.data.formations));
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-
-  //get user linkedin profile
-  const [displaylinkedin, setDisplaylinkedin] = useState([]);
-  function getLinkedin() {
-    authAxios
-      .get("Linkedin/getLinkedin/" + localStorage.getItem("iduser"), {
-        method: "GET",
-      })
-      .then(
-        (res) => {
-          console.log(res.data.linkedin);
-          if(res.data.linkedin!=null){
-            setDisplaylinkedin(displaylinkedin.concat(res.data.linkedin));
-          }
-          // progression()
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-
+   const [display, setDisplay] = useState([]);
+   const [displayexp, setDisplayExp] = useState([]);
+   const [displaycomp, setDisplayComp] = useState([]);
+   const [displayhobby, setDisplayHobby] = useState([]);
+   const [displayetude, setDisplayEtude] = useState([]);
+   const [displaylinkedin, setDisplaylinkedin] = useState([]);
+   const [loading,setLoading] = useState(true);
   //get loggedin user
   const [user, setUser] = useState([]);
   async function getUser() {
+    setLoading(true)
     await authAxios
       .get("Candidats/" + localStorage.getItem("iduser"), {
         method: "GET",
       })
       .then(
         (res) => {
+         // setGetFileName("https://localhost:44392/files/" + res.data.cVname);
+          //setNomFichierFinal(res.data.cVoriginalfilename);
+          //setProfile("https://localhost:44392/Photos/" + res.data.photo);
+          setHidebutton(false);
           console.log(res.data);
           setUser(res.data);
           setDisplay(res.data.langue)
@@ -259,79 +144,50 @@ function ProfilePage(props) {
             setDisplaylinkedin(displaylinkedin.concat(res.data.linkedin));
           }
           setDisplayHobby(res.data.hobby) 
+          setLoading(false)
         },
         (error) => {
+          setLoading(false)
           console.log(error);
         }
       );
   }
 
   //Updating circular progress
-
   const [bar, setBar] = useState(0);
   var x = 0;
   function progression() {
-    var l = 0;
-    var e = 0;
-    var et = 0;
-    var c = 0;
-    var h = 0;
-    var lin = 0;
-    if (display.length > 0) {
-      l = 20;
-    }
-    if (displayexp.length > 0) {
-      e = 20;
-    }
-    if (displayetude.length > 0) {
-      et = 20;
-    }
-    if (displaycomp.length > 0) {
-      c = 20;
-    }
-    if (displayhobby.length > 0) {
-      h = 10;
-    }
-    if (displaylinkedin.length > 0) {
-      lin = 10;
-    }
+    var l = 0; var e = 0;
+    var et = 0;var c = 0;
+    var h = 0;var lin = 0;
+    if (display.length > 0) {l = 20;}
+    if (displayexp.length > 0) {e = 20;}
+    if (displayetude.length > 0) {et = 20;}
+    if (displaycomp.length > 0) {c = 20;}
+    if (displayhobby.length > 0) {h = 10;}
+    if (displaylinkedin.length > 0) {lin = 10;}
     setBar(l + e + et + c + h + lin);
   }
   useEffect(() => {
     progression();
-  }, [
-    display,
-    displayexp,
-    displayhobby,
-    displaylinkedin,
-    displaycomp,
-    displayetude,
+  }, [display,displayexp,displayhobby,displaylinkedin,displaycomp,displayetude,
   ]);
+
   useEffect(() => {
-    getUser();
     getUserPhoto()
     getUserCV()
-   /* return () => {
-      cleanup
-    }*/
   }, [profile])
 
   useEffect(() => {
     progression();
-  /*  getAllFormations();
-    getAllLanguages();
-    getAllExperiences();
-    getAllCompetences();
-    getAllHobbies();
-    getLinkedin();*/
-   
+    getUser();
+  /*getAllFormations();getAllLanguages();getAllExperiences();getAllCompetences();getAllHobbies(); getLinkedin();*/
   }, []);
 
   //Add languages
   var [languages, setState] = useState([]);
   ajouterLang = ajouterLang.bind(this);
   function ajouterLang(e) {
-    //console.log(languages.length);
     e.preventDefault();
     setState(
       languages.concat(
@@ -360,7 +216,6 @@ function ProfilePage(props) {
       )
     );
   }
-
   //Add cometences
   var [compt, setCompt] = useState([]);
   ajouterCompt = ajouterCompt.bind(this);
@@ -376,7 +231,6 @@ function ProfilePage(props) {
       )
     );
   }
-
   //Add Hobbies
   var [hobbies, setHobbies] = useState([]);
   ajouterHobby = ajouterHobby.bind(this);
@@ -392,7 +246,6 @@ function ProfilePage(props) {
       )
     );
   }
-
   //Add Etudes
   var [etudes, setEtudes] = useState([]);
   ajouterEtude = ajouterEtude.bind(this);
@@ -452,7 +305,7 @@ function ProfilePage(props) {
   var [NomFichierFinal, setNomFichierFinal] = useState();
   var [hidebutton, setHidebutton] = useState(true);
 
-   const  onFileUpload = (event) => {
+    const  onFileUpload = (event) => {
     const formData = new FormData();
     if (fichier != null) {
       formData.append("file", document.getElementById("cv").files[0]);
@@ -557,7 +410,6 @@ function ProfilePage(props) {
     setEtatMatri(event.target.value);
   };
   EditInfo = EditInfo.bind(this);
-
   function EditInfo() {
     setNom(user.nom);
     setPrenom(user.prenom);
@@ -586,9 +438,13 @@ function ProfilePage(props) {
 
   async function handleEdit() {
     var id = localStorage.getItem("iduser");
-    console.log(etatMatri);
-    console.log(genre)
-    await authAxios
+    console.log(new Date());
+    console.log(new Date(birthday))
+    //alert("ereeeuuuuuuur birthday",new Date(birthday) <= new Date())
+    if(new Date(birthday) >= new Date()){
+      document.getElementById("validdate").textContent="Invalide date de naissance !"
+    }else{
+      await authAxios
       .put("Candidats/" + id, {
         nom: nom,
         prenom: prenom,
@@ -605,6 +461,8 @@ function ProfilePage(props) {
         closeForm();
         setState1({ ...state1, open: true })
       });
+    }
+    
   }
   const [state1, setState1] = useState({
     open: false,
@@ -615,680 +473,660 @@ function ProfilePage(props) {
   const handleClose = () => {
     setState1({ ...state1, open: false });
   };
-  
-  //console.log(dataUser)
-  return (
-    <div 
-   // {...props} bar={bar}
-    >
-      <Parallax medium filter image={require("assets/img/profile-bg.jpg")} style={{ height:"300px"}}/>
-      <div className={classNames(classes.main, classes.mainRaised)}>
-        <div style={{ backgroundColor: "#F0F0F0"}}>
+
+    return (
+      <div style={{ backgroundColor: "#F0F0F0"}}>
+      {loading === false  && user=== 0 ?
+        <div><h3>erreur !!!</h3></div>
+        :
+        <React.Fragment>
+        <Parallax medium filter image={require("assets/img/profile-bg.jpg")} style={{ height:"300px"}}/>
+        <div className={classNames(classes.main, classes.mainRaised)}>
+          <div style={{ backgroundColor: "#F0F0F0"}}>
           <div>
-            <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={6}>
-                <div className={classes.profile}>
-                  <img
-                    id="img-profile"
-                    src={profile}
-                    alt="img-user"
-                    className={imageClasses}
-                  />
-                  <div className={classes.name}>
-                    <label class="btn btn-primary">
-                      <i class="fa fa-image"></i> Modifier photo{" "}
-                      <input
-                        id="profilephoto"
-                        accept="image/*"
-                        type="file"
-                        style={{ display: "none" }}
-                        name="image-user"
-                        onChange={onImageUpload}
-                      ></input>
-                    </label>
-                    <i
-                      style={{ color: "grey" }}
-                      class="far fa-trash-alt"
-                      title="supprimer"
-                      onClick={supprimerPhoto}
-                    ></i>
-                    <br></br>
-                    {/**********************************/}
-                    <Card id="global">
-                      <span
-                        style={{ padding: "10px 10px 0 0", float: "right" }}
-                        id="editicon"
-                      >
-                        <i
-                          class="fas fa-pencil-alt"
-                          title="Editer"
-                          onClick={EditInfo}
-                          style={{ float: "right" }}
-                        ></i>
-                      </span>
-                      <CardBody id="userinfo">
-                        <div id="formuser" style={{ display: "none" }}>
-                          <form autoComplete="off">
-                            <GridItem xs={12} sm={12} md={12}>
-                              <CustomInput
-                                id="editnom"
-                                value={nom}
-                                onChange={(e) => setNom(e.target.value)}
-                                inputProps={{
-                                  placeholder: "Nom",
-                                  endAdornment: (
-                                    <InputAdornment>
-                                      <i class="fas fa-user"></i>
-                                    </InputAdornment>
-                                  ),
-                                }}
-                                formControlProps={{
-                                  fullWidth: true,
-                                }}
-                              />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={12}>
-                              <CustomInput
-                                id="editpren"
-                                value={prenom}
-                                onChange={(e) => setPrenom(e.target.value)}
-                                inputProps={{
-                                  placeholder: "Prénom",
-                                  endAdornment: (
-                                    <InputAdornment>
-                                      <i class="fas fa-user"></i>
-                                    </InputAdornment>
-                                  ),
-                                }}
-                                formControlProps={{
-                                  fullWidth: true,
-                                }}
-                              />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={12}>
-                              <h5>
-                                Genre :{" "}
-                                <FormControl component="fieldset">
-                                  <RadioGroup
-                                    row
-                                    value={genre}
-                                    onChange={(event) =>
-                                      handleRadioChange(event)
-                                    }
-                                    aria-label="gender"
-                                    name="gender1"
-                                  >
-                                    <FormControlLabel
-                                      value="Femme"
-                                      control={
-                                        <Radio className={classes.root} />
-                                      }
-                                      label="Femme"
-                                    />
-                                    <FormControlLabel
-                                      value="Homme"
-                                      control={
-                                        <Radio className={classes.root} />
-                                      }
-                                      label="Homme"
-                                    />
-                                  </RadioGroup>
-                                </FormControl>
-                              </h5>
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={12}>
-                              <CustomInput
-                                id="editmetier"
-                                value={metier}
-                                onChange={(e) => setMetier(e.target.value)}
-                                inputProps={{
-                                  placeholder: "Post occupé actuellement ",
-                                  endAdornment: (
-                                    <InputAdornment>
-                                       <i class="fas fa-briefcase"></i>
-                                    </InputAdornment>
-                                  ),
-                                }}
-                                formControlProps={{
-                                  fullWidth: true,
-                                }}
-                              />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={12}>
-                              <CustomInput
-                                id="editadresse"
-                                value={adresse}
-                                onChange={(e) => setAdresse(e.target.value)}
-                                inputProps={{
-                                  placeholder: "Adresse",
-                                  endAdornment: (
-                                    <InputAdornment>
-                                      <i class="fas fa-map-marker-alt"></i>
-                                    </InputAdornment>
-                                  ),
-                                }}
-                                formControlProps={{
-                                  fullWidth: true,
-                                }}
-                              />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={12}>
-                              <h5>
-                                Etat matrimonial :
-                                <TextField
-                                  labelId="label"
-                                  select
-                                  value={
-                                    etatMatri != null
-                                      ? etatMatri
-                                      : "Sélectionnez"
-                                  }
-                                  style={{ width: "60%" }}
-                                  onChange={(e) => {
-                                    setEtatMatri(e.target.value);
-                                    console.log(etatMatri);
+           <Loader type="ThreeDots" color="purple" height={60} width={60} style={{marginLeft:"45%"}}  visible={loading}/> 
+          </div>
+         {/*{loading === false ? */}
+            <div>
+              <GridContainer justify="center">
+                <GridItem xs={12} sm={12} md={6}>
+                  <div className={classes.profile}>
+                    <img
+                      id="img-profile"
+                      src={profile}
+                      alt="img-user"
+                      className={imageClasses}
+                    />
+                    <div className={classes.name}>
+                      <label class="btn btn-primary">
+                        <i class="fa fa-image"></i> Modifier photo{" "}
+                        <input
+                          id="profilephoto"
+                          accept="image/*"
+                          type="file"
+                          style={{ display: "none" }}
+                          name="image-user"
+                          onChange={onImageUpload}
+                        ></input>
+                      </label>
+                      <i
+                        style={{ color: "grey" }}
+                        class="far fa-trash-alt"
+                        title="supprimer"
+                        onClick={supprimerPhoto}
+                      ></i>
+                      <br></br>
+                      {/**********************************/}
+                      <Card id="global">
+                        <span
+                          style={{ padding: "10px 10px 0 0", float: "right" }}
+                          id="editicon">
+                          <i
+                            class="fas fa-pencil-alt"
+                            title="Editer"
+                            onClick={EditInfo}
+                            style={{ float: "right" }}
+                          ></i>
+                        </span>
+                        <CardBody id="userinfo">
+                          <div id="formuser" style={{ display: "none" }}>
+                            <form autoComplete="off">
+                              <GridItem xs={12} sm={12} md={12}>
+                                <CustomInput
+                                  id="editnom"
+                                  value={nom}
+                                  onChange={(e) => setNom(e.target.value)}
+                                  inputProps={{
+                                    placeholder: "Nom",
+                                    endAdornment: (
+                                      <InputAdornment>
+                                        <i class="fas fa-user"></i>
+                                      </InputAdornment>
+                                    ),
                                   }}
-                                  id="select"
-                                >
-                                  <MenuItem value="Sélectionnez"  selected disabled>
-                                    Sélectionnez
-                                  </MenuItem>
-                                  <MenuItem value="Célibataire" >
-                                    Célibataire
-                                  </MenuItem>
-                                  <MenuItem value="Marié(e)">Marié(e)</MenuItem>
-                                  <MenuItem value="Divorcé(e)">
-                                    Divorcé(e)
-                                  </MenuItem>
-                                  <MenuItem value="Veuf/veuve">
-                                    Veuf/veuve
-                                  </MenuItem>
-                                </TextField>
-                              </h5>
-                            </GridItem>
-                            
-                            <GridItem xs={12} sm={12} md={12}>
-                              <CustomInput
-                                id="edittel"
-                                value={tel}
-                                onChange={(e) => setTel(e.target.value)}
-                                inputProps={{
-                                  placeholder: " N° Téléphone",
-                                  type: "number",
-                                  endAdornment: (
-                                    <InputAdornment>
-                                      <i class="fas fa-phone"></i>
-                                    </InputAdornment>
-                                  ),
-                                }}
-                                formControlProps={{
-                                  fullWidth: true,
-                                }}
-                              />
-                            </GridItem>
-                            {/*<GridItem xs={12} sm={12} md={12}>
-                              <CustomInput
-                                id="email"
-                                value={user.email}
-                                title="Modification Désativée"
-                                formControlProps={{
-                                  fullWidth: true,
-                                }}
-                                inputProps={{
-                                  disabled: true,
-                                  endAdornment: (
-                                    <InputAdornment>
-                                      <i class="fas fa-envelope"></i>
-                                    </InputAdornment>
-                                  ),
-                                }}
-                              />
-                            </GridItem>*/}
-                            <GridItem xs={12} sm={12} md={12}>
-                              <h5>
-                                {" "}
-                                Date de naissance :{" "}
-                                <TextField
-                                  type="date"
-                                  id="editbirthday"
-                                  value={birthday}
-                                  style={{ width: "60%" }}
-                                  onChange={(e) => setBirthday(e.target.value)}
+                                  formControlProps={{
+                                    fullWidth: true,
+                                  }}
                                 />
-                              </h5>
-                            </GridItem>
-                            <Button justIcon onClick={closeForm}>
-                              <Close></Close>
-                            </Button>
-                            <Button color="primary" onClick={handleEdit}>
-                              <Edit></Edit>Modifier
-                            </Button>
-                          </form>
-                        </div>
-                        <span id="displayeduser">
-                          <h4 className={classes.title}>
-                            <span id="nom">{user.nom}</span>{" "}
-                            <span id="prenom">{user.prenom}</span>
-                          </h4>
-                          <h6>
-                            <i
-                              class="fas fa-envelope"
-                              style={{ color: "purple" }}
-                            ></i>
-                            &nbsp;{user.email}
-                          </h6>
-                          <h6>
-                            {user.genre != "" && user.genre != null ? (
-                              <h6 id="genre">
+                              </GridItem>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <CustomInput
+                                  id="editpren"
+                                  value={prenom}
+                                  onChange={(e) => setPrenom(e.target.value)}
+                                  inputProps={{
+                                    placeholder: "Prénom",
+                                    endAdornment: (
+                                      <InputAdornment>
+                                        <i class="fas fa-user"></i>
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                  formControlProps={{
+                                    fullWidth: true,
+                                  }}
+                                />
+                              </GridItem>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <h5>
+                                  Genre :{" "}
+                                  <FormControl component="fieldset">
+                                    <RadioGroup
+                                      row
+                                      value={genre}
+                                      onChange={(event) =>
+                                        handleRadioChange(event)
+                                      }
+                                      aria-label="gender"
+                                      name="gender1"
+                                    >
+                                      <FormControlLabel
+                                        value="Femme"
+                                        control={
+                                          <Radio className={classes.root} />
+                                        }
+                                        label="Femme"
+                                      />
+                                      <FormControlLabel
+                                        value="Homme"
+                                        control={
+                                          <Radio className={classes.root} />
+                                        }
+                                        label="Homme"
+                                      />
+                                    </RadioGroup>
+                                  </FormControl>
+                                </h5>
+                              </GridItem>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <CustomInput
+                                  id="editmetier"
+                                  value={metier}
+                                  onChange={(e) => setMetier(e.target.value)}
+                                  inputProps={{
+                                    placeholder: "Post occupé actuellement ",
+                                    endAdornment: (
+                                      <InputAdornment>
+                                         <i class="fas fa-briefcase"></i>
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                  formControlProps={{
+                                    fullWidth: true,
+                                  }}
+                                />
+                              </GridItem>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <CustomInput
+                                  id="editadresse"
+                                  value={adresse}
+                                  onChange={(e) => setAdresse(e.target.value)}
+                                  inputProps={{
+                                    placeholder: "Adresse",
+                                    endAdornment: (
+                                      <InputAdornment>
+                                        <i class="fas fa-map-marker-alt"></i>
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                  formControlProps={{
+                                    fullWidth: true,
+                                  }}
+                                />
+                              </GridItem>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <h5>
+                                  Etat matrimonial :
+                                  <TextField
+                                    labelId="label"
+                                    select
+                                    value={
+                                      etatMatri != null
+                                        ? etatMatri
+                                        : "Sélectionnez"
+                                    }
+                                    style={{ width: "60%" }}
+                                    onChange={(e) => {
+                                      setEtatMatri(e.target.value);
+                                      console.log(etatMatri);
+                                    }}
+                                    id="select"
+                                  >
+                                    <MenuItem value="Sélectionnez"  selected disabled>
+                                      Sélectionnez
+                                    </MenuItem>
+                                    <MenuItem value="Célibataire" >
+                                      Célibataire
+                                    </MenuItem>
+                                    <MenuItem value="Marié(e)">Marié(e)</MenuItem>
+                                    <MenuItem value="Divorcé(e)">
+                                      Divorcé(e)
+                                    </MenuItem>
+                                    <MenuItem value="Veuf/veuve">
+                                      Veuf/veuve
+                                    </MenuItem>
+                                  </TextField>
+                                </h5>
+                              </GridItem>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <CustomInput
+                                  id="edittel"
+                                  value={tel}
+                                  onChange={(e) => setTel(e.target.value)}
+                                  inputProps={{
+                                    placeholder: " N° Téléphone",
+                                    type: "number",
+                                    endAdornment: (
+                                      <InputAdornment>
+                                        <i class="fas fa-phone"></i>
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                  formControlProps={{
+                                    fullWidth: true,
+                                  }}
+                                />
+                              </GridItem>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <h5>
+                                  {" "}
+                                  Date de naissance :{" "}
+                                  <TextField
+                                  onKeyDown={(e)=>e.preventDefault()}
+                                    type="date"
+                                    InputProps={{
+                                      inputProps: {
+                                        min: "1930-12-31",
+                                        max: "2004-12-31"
+                                      }
+                                    }}
+                                    InputLabelProps={{
+                                      shrink: true
+                                    }}
+                                    id="editbirthday"
+                                    defaultValue={birthday}
+                                    style={{ width: "60%" }}
+                                    value={birthday}
+                                    onChange={(e) => setBirthday(e.target.value)}
+                                  />
+                                  <br></br><span id="validdate" style={{color:"red"}}></span>
+                                </h5>
+                              </GridItem>
+                              <Button justIcon onClick={closeForm}>
+                                <Close></Close>
+                              </Button>
+                              <Button color="primary" onClick={handleEdit}>
+                                <Edit></Edit>Modifier
+                              </Button>
+                            </form>
+                          </div>
+                          <span id="displayeduser">
+                            <h4 className={classes.title}>
+                              <span id="nom">{user.nom}</span>{" "}
+                              <span id="prenom">{user.prenom}</span>
+                            </h4>
+                            <h6>
+                              <i
+                                class="fas fa-envelope"
+                                style={{ color: "purple" }}
+                              ></i>
+                              &nbsp;{user.email}
+                            </h6>
+                            <h6>
+                              {user.genre != "" && user.genre != null ? (
+                                <h6 id="genre">
+                                  <i
+                                    class="fas fa-venus-mars"
+                                    style={{ color: "purple" }}
+                                  ></i>
+                                  &nbsp;{user.genre} , {" "}
+                                  {user.etat_matrimonial != "" && user.etat_matrimonial != null ? (
+                                    user.etat_matrimonial
+                                  ) : null} 
+                                  <h6>
+                            </h6>
+                                </h6>
+                              ) : null}
+                            </h6>
+                            <h6>
+                              {user.metier != "" && user.metier != null ? (
+                                <h6 id="metier1">
+                                <i class="fas fa-briefcase"
+                                    style={{ color: "purple"}}
+                                  ></i>
+                                  &nbsp;{user.metier}
+                                </h6>
+                              ) : null}
+                            </h6>
+                            {user.date_naissance != "" &&
+                            user.date_naissance != null   &&
+                            user.date_naissance !="0001-01-01T00:00:00" ?(
+                              <h6 id="birthday">
                                 <i
-                                  class="fas fa-venus-mars"
+                                  class="fas fa-birthday-cake"
                                   style={{ color: "purple" }}
                                 ></i>
-                                &nbsp;{user.genre} , {" "}
-                                {user.etat_matrimonial != "" && user.etat_matrimonial != null ? (
-                                  user.etat_matrimonial
-                                ) : null} 
-                                <h6>
-                          </h6>
+                                &nbsp;{new Date(user.date_naissance).toLocaleString('fr-FR').slice(0,10)}
                               </h6>
                             ) : null}
-                          </h6>
-                          <h6>
-                            {user.metier != "" && user.metier != null ? (
-                              <h6 id="metier1">
-                              <i class="fas fa-briefcase"
-                                  style={{ color: "purple"}}
+                            {user.adresse != "" && user.adresse != null ? (
+                              <h6 id="adresse">
+                                <i
+                                  class="fas fa-map-marker-alt"
+                                  style={{ color: "purple" }}
                                 ></i>
-                                &nbsp;{user.metier}
+                                &nbsp;{user.adresse}
                               </h6>
                             ) : null}
-                          </h6>
-                          {user.date_naissance != "" &&
-                          user.date_naissance != null   &&
-                          user.date_naissance !="0001-01-01T00:00:00" ?(
-                            <h6 id="birthday">
-                              <i
-                                class="fas fa-birthday-cake"
-                                style={{ color: "purple" }}
-                              ></i>
-                              &nbsp;{new Date(user.date_naissance).toLocaleString('fr-FR').slice(0,10)}
-                            </h6>
-                          ) : null}
-                          {user.adresse != "" && user.adresse != null ? (
-                            <h6 id="adresse">
-                              <i
-                                class="fas fa-map-marker-alt"
-                                style={{ color: "purple" }}
-                              ></i>
-                              &nbsp;{user.adresse}
-                            </h6>
-                          ) : null}
-                          {user.phoneNumber != "" &&
-                          user.phoneNumber != null ? (
-                            <h6 id="tel">
-                              <i
-                                class="fas fa-phone"
-                                style={{ color: "purple" }}
-                              ></i>
-                              &nbsp;{user.phoneNumber}
-                            </h6>
-                          ) : null}
-                        </span>
-                      </CardBody>
-                    </Card>
+                            {user.phoneNumber != "" &&
+                            user.phoneNumber != null ? (
+                              <h6 id="tel">
+                                <i
+                                  class="fas fa-phone"
+                                  style={{ color: "purple" }}
+                                ></i>
+                                &nbsp;{user.phoneNumber}
+                              </h6>
+                            ) : null}
+                          </span>
+                        </CardBody>
+                      </Card>
+                    </div>
                   </div>
-                </div>
-              </GridItem>
-            </GridContainer>
-            <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        autoHideDuration={4000}
-        onClose={handleClose}
-        style={{ marginTop: "35px" }}
-      >
-        <Alert
+                </GridItem>
+              </GridContainer>
+              <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          autoHideDuration={4000}
           onClose={handleClose}
-          variant="filled"
-          style={{ backgroundColor: "grey", color: "white",marginTop:"20px" }}
-        >
-          Vos informations ont été mises à jours <br></br> avec succès  !
-        </Alert>
-      </Snackbar>
-           {/* <div
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                flexDirection: "column",
-                marginTop: "0px",
-                flexWrap: "wrap",
-                position: "relative",
-                float: "right",
-              }}
-            >*/}
-            {/* <BarContext.Provider value={bar}>*/}
-            {/*</div>*/}
-            {/******************************/}
-      <Grid container direction="row" justify="center">
-        <GridItem xs={12} sm={12} md={8} >
-           <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
-              <h3 style={{ marginLeft: "0%" }}>
-                <i class="fas fa-language" style={{ color: "purple" }}></i>{" "}
-                <strong> Langues maitrisées</strong>
-              </h3>
-              <div style={{float: "right"}}>
-                <i
-                  class="fas fa-plus"
-                  title="ajouter une langue"
-                  style={{ fontSize: "17px", color: "purple" }}
-                  onClick={ajouterLang}
-                ></i>
-              </div>
-         </div>           
-          
-            {display.length === 0 && (
-              <Langue
-                tab={languages}
-                cle={100}
-                update={display}
-                setDisplay={setDisplay}
-              />
-            )}
-            {languages}
-            <DisplayLangue tableau={display} setDisplay={setDisplay} />
-
-           {/********************* Expériences ***************/}
-
-           <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
-              <h3 style={{ marginLeft: "0%" }}>
-                <i class="fas fa-briefcase" style={{ color: "purple" }}></i>{" "}
-                <strong>Exprériences professionnelles</strong>
-              </h3>
-              <div
-                style={{
-                  float: "right"}} >
-                <i
-                  class="fas fa-plus"
-                  style={{ fontSize: "17px", color: "purple" }}
-                  onClick={ajouterExp}
-                ></i>
-              </div>
-            </div>
-            {displayexp.length === 0 && (
-              <Experience
-                cle={1000}
-                setDisplayExp={setDisplayExp}
-                displayexp={displayexp}
-              />
-            )}
-            {exps}
-            <DisplayExp displayexp={displayexp} setDisplayExp={setDisplayExp} />
-
-            {/********************* Etudes ******************/}
-
-            <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
-              <h3 style={{ marginLeft: "0%" }}>
-                <i
-                  class="fas fa-graduation-cap"
-                  style={{ color: "purple" }}
-                ></i>{" "}
-                <strong> Études</strong>
-              </h3>
-              <div style={{float: "right"}}>
-                <i
-                  class="fas fa-plus"
-                  style={{ fontSize: "17px", color: "purple" }}
-                  onClick={ajouterEtude}
-                ></i>
-              </div>
-            </div>
-            {displayetude.length === 0 && (
-              <Formation
-                cle={1440}
-                setDisplayEtude={setDisplayEtude}
-                displayetude={displayetude}
-              />
-            )}
-            {etudes}
-            <DisplayEtude
-              displayetude={displayetude}
-              setDisplayEtude={setDisplayEtude}
-            />
-
-            {/********************* Compétences ******************/}
-
-            <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
-              <h3 style={{ marginLeft: "0%" }}>
-                <i class="fas fa-clipboard" style={{ color: "purple" }}></i>{" "}
-                <strong>Compétences</strong>
-              </h3>
-              <div
-                style={{float: "right"}}>
-                <i
-                  class="fas fa-plus"
+          style={{ marginTop: "35px" }}
+         >
+          <Alert
+            onClose={handleClose}
+            variant="filled"
+            style={{ backgroundColor: "grey", color: "white",marginTop:"20px" }}
+          >
+            Vos informations ont été mises à jours <br></br> avec succès  !
+          </Alert>
+         </Snackbar>
+              {/******************************/}
+         <Grid container direction="row" justify="center">
+          <GridItem xs={12} sm={12} md={8} >
+             <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
+                <h3 style={{ marginLeft: "0%" }}>
+                  <i class="fas fa-language" style={{ color: "purple" }}></i>{" "}
+                  <strong> Langues maitrisées</strong>
+                </h3>
+                <div style={{float: "right"}}>
+                  <i
+                    class="fas fa-plus"
+                    title="ajouter une langue"
+                    style={{ fontSize: "17px", color: "purple" }}
+                    onClick={ajouterLang}
+                  ></i>
+                </div>
+           </div>           
+            
+              {display.length === 0 && (
+                <Langue
+                  tab={languages}
+                  cle={"lang"+100}
+                  update={display}
+                  setDisplay={setDisplay}
+                />
+              )}
+              {languages}
+              <DisplayLangue tableau={display} setDisplay={setDisplay} />
+  
+             {/********************* Expériences ***************/}
+  
+             <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
+                <h3 style={{ marginLeft: "0%" }}>
+                  <i class="fas fa-briefcase" style={{ color: "purple" }}></i>{" "}
+                  <strong>Exprériences professionnelles</strong>
+                </h3>
+                <div
                   style={{
-                    fontSize: "17px",
-                    color: "purple",
-                  }}
-                  onClick={ajouterCompt}
-                ></i>
+                    float: "right"}} >
+                  <i
+                    class="fas fa-plus"
+                    style={{ fontSize: "17px", color: "purple" }}
+                    onClick={ajouterExp}
+                  ></i>
+                </div>
               </div>
-            </div>
-            {displaycomp.length === 0 && (
-              <Compétence
-                cle={1004}
+              {displayexp.length === 0 && (
+                <Experience
+                  cle={"exp"+1000}
+                  setDisplayExp={setDisplayExp}
+                  displayexp={displayexp}
+                />
+              )}
+              {exps}
+              <DisplayExp displayexp={displayexp} setDisplayExp={setDisplayExp} />
+  
+              {/********************* Etudes ******************/}
+  
+              <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
+                <h3 style={{ marginLeft: "0%" }}>
+                  <i
+                    class="fas fa-graduation-cap"
+                    style={{ color: "purple" }}
+                  ></i>{" "}
+                  <strong> Études</strong>
+                </h3>
+                <div style={{float: "right"}}>
+                  <i
+                    class="fas fa-plus"
+                    style={{ fontSize: "17px", color: "purple" }}
+                    onClick={ajouterEtude}
+                  ></i>
+                </div>
+              </div>
+              {displayetude.length === 0 && (
+                <Formation
+                  cle={"form"+1440}
+                  setDisplayEtude={setDisplayEtude}
+                  displayetude={displayetude}
+                />
+              )}
+              {etudes}
+              <DisplayEtude
+                displayetude={displayetude}
+                setDisplayEtude={setDisplayEtude}
+              />
+  
+              {/********************* Compétences ******************/}
+  
+              <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
+                <h3 style={{ marginLeft: "0%" }}>
+                  <i class="fas fa-clipboard" style={{ color: "purple" }}></i>{" "}
+                  <strong>Compétences</strong>
+                </h3>
+                <div
+                  style={{float: "right"}}>
+                  <i
+                    class="fas fa-plus"
+                    style={{
+                      fontSize: "17px",
+                      color: "purple",
+                    }}
+                    onClick={ajouterCompt}
+                  ></i>
+                </div>
+              </div>
+              {displaycomp.length === 0 && (
+                <Compétence
+                  cle={"compt"+1004}
+                  displaycomp={displaycomp}
+                  setDisplayComp={setDisplayComp}
+                />
+              )}
+              {compt}
+              <DisplayCompetence
                 displaycomp={displaycomp}
                 setDisplayComp={setDisplayComp}
               />
-            )}
-            {compt}
-            <DisplayCompetence
-              displaycomp={displaycomp}
-              setDisplayComp={setDisplayComp}
-            />
-
-            {/********************* Hobbies ******************/}
-
-            <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
-              <h3>
-                <i class="fas fa-gamepad" style={{ color: "purple" }}></i>{" "}
-                <strong> Passe-temps </strong>
-              </h3>
-              <div style={{float: "right"}}>
-                <i
-                  class="fas fa-plus"
-                  style={{
-                    fontSize: "17px",
-                    color: "purple",
-                  }}
-                  onClick={ajouterHobby}
-                ></i>
+              {/********************* Hobbies ******************/}
+              <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
+                <h3>
+                  <i class="fas fa-gamepad" style={{ color: "purple" }}></i>{" "}
+                  <strong> Passe-temps </strong>
+                </h3>
+                <div style={{float: "right"}}>
+                  <i
+                    class="fas fa-plus"
+                    style={{
+                      fontSize: "17px",
+                      color: "purple",
+                    }}
+                    onClick={ajouterHobby}
+                  ></i>
+                </div>
               </div>
-            </div>
-            {displayhobby.length === 0 && (
-              <Hobbies
-                cle={111}
+              {displayhobby.length === 0 && (
+                <Hobbies
+                  cle={"hobby"+111}
+                  displayhobby={displayhobby}
+                  setDisplayHobby={setDisplayHobby}
+                />
+              )}
+              {hobbies}
+              <DisplayHobby
                 displayhobby={displayhobby}
                 setDisplayHobby={setDisplayHobby}
               />
-            )}
-            {hobbies}
-            <DisplayHobby
-              displayhobby={displayhobby}
-              setDisplayHobby={setDisplayHobby}
-            />
-             {/********************* Linkedin ******************/}
-
-            <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
-            <h3 >
-              <i class="fab fa-linkedin" style={{ color: "purple" }}></i>{" "}
-              <strong>Profil Linkedin</strong>
-            </h3>
-            </div>
-            {displaylinkedin.length === 0 && (
-              <Linkedin
-                linkeds={linkeds}
-                cle={1}
+               {/********************* Linkedin ******************/}
+  
+              <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center" }}>
+              <h3 >
+                <i class="fab fa-linkedin" style={{ color: "purple" }}></i>{" "}
+                <strong>Profil Linkedin</strong>
+              </h3>
+              </div>
+              {displaylinkedin.length === 0 && (
+                <Linkedin
+                  linkeds={linkeds}
+                  cle={"linked"+1}
+                  displaylinkedin={displaylinkedin}
+                  setDisplaylinkedin={setDisplaylinkedin}
+                />
+              )}
+              {linkeds}
+              <DisplayLinkedin
                 displaylinkedin={displaylinkedin}
                 setDisplaylinkedin={setDisplaylinkedin}
+                linkeds={linkeds}
+                setLinkeds={setLinkeds}
               />
-            )}
-            {linkeds}
-            <DisplayLinkedin
-              displaylinkedin={displaylinkedin}
-              setDisplaylinkedin={setDisplaylinkedin}
-              linkeds={linkeds}
-              setLinkeds={setLinkeds}
-            />
-            <br></br>
-            <div className={classes.description}></div>
-           </GridItem>
-           <GridItem xs={12} sm={12} md={3}>
-              <Grid
-                container
-                justify="flex-end"
-                alignItems="flex-end"
-                direction="column"
-              >
-            <GridItem>
-              <Card
-             /*   style={{
-                  float: "right",
-                  marginRight: "100px",
-                  width: "280px",
-                  height: "250px",
-                }}*/
-              >
-                <h4 style={{ textAlign: "center" }}>
-                  <strong>Votre profil est complété à</strong>
-                </h4>
-                <div
-                  style={{
-                    margin: "5% 20%",
-                    color: "purple",
-                    fontWeight: "bold",
-                   // fontSize: "20%",
-                    textAlign: "center",
-                  }}
+              <br></br>
+              <div className={classes.description}></div>
+             </GridItem>
+             <GridItem xs={12} sm={12} md={3}>
+                <Grid
+                  container
+                  justify="flex-end"
+                  alignItems="flex-end"
+                  direction="column"
                 >
-                  <CircularProgressbar
-                    value={bar}
-                    text={`${bar}%`}
-                    styles={buildStyles({
-                      pathColor: "purple",
-                      textColor: "purple",
-                      trailColor: "#d6d6d6",
-                      backgroundColor: "#3e98c7",
-                    })}
-                  />
-                </div>
-              </Card>
-              </GridItem>
-               <GridItem>
-               <Card
-                style={{
-               //  textAlign:"center"
-                }}
-              >
-                <h4 style={{ textAlign: "center", marginTop: "15px" }}>
-                  {" "}
-                  <strong>Importer votre CV</strong>
-                </h4>
-                <br></br>
-                <label style={{ marginLeft: "0%" }}>
+              <GridItem>
+                <Card>
+                  <h4 style={{ textAlign: "center" }}>
+                    <strong>Votre profil est complété à</strong>
+                  </h4>
                   <div
                     style={{
-                      margin:" 0 10% 0 10%",
-                      backgroundColor: "purple",
-                      padding: "15px",
-                      color: "white",
-                      textAlign:"center"
+                      margin: "5% 20%",
+                      color: "purple",
+                      fontWeight: "bold",
+                     // fontSize: "20%",
+                      textAlign: "center",
                     }}
                   >
-                    {" "}
-                    Choisir un fichier en format PDF
-                    <input
-                      type="file"
-                      onChange={filename}
-                      id="cv"
-                      style={{ display: "none" }}
-                      accept="application/pdf"
-                    ></input>
+                    <CircularProgressbar
+                      value={bar}
+                      text={`${bar}%`}
+                      styles={buildStyles({
+                        pathColor: "purple",
+                        textColor: "purple",
+                        trailColor: "#d6d6d6",
+                        backgroundColor: "#3e98c7",
+                      })}
+                    />
                   </div>
-                </label>
-                <br></br>
-                <span
+                </Card>
+                </GridItem>
+                 <GridItem>
+                 <Card
                   style={{
-                    color: "black",
-                    textAlign: "center",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    width: "90%",
-                    whiteSpace: "nowrap",
                   }}
                 >
-                  <p
-                    id="pfile"
+                  <h4 style={{ textAlign: "center", marginTop: "15px" }}>
+                    {" "}
+                    <strong>Importer votre CV</strong>
+                  </h4>
+                  <br></br>
+                  <label style={{ marginLeft: "0%" }}>
+                    <div
+                      style={{
+                        margin:" 0 10% 0 10%",
+                        backgroundColor: "purple",
+                        padding: "15px",
+                        color: "white",
+                        textAlign:"center"
+                      }}
+                    >
+                      {" "}
+                      Choisir un fichier en format PDF
+                      <input
+                        type="file"
+                        onChange={filename}
+                        id="cv"
+                        style={{ display: "none" }}
+                        accept="application/pdf"
+                      ></input>
+                    </div>
+                  </label>
+                  <br></br>
+                  <span
                     style={{
-                      width: "40%",
-                      marginLeft: "6%",
-                      marginTop: "8px",
+                      color: "black",
+                      textAlign: "center",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
+                      width: "90%",
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {nomfichier}
-                  </p>
-                  &nbsp;&nbsp;
-                  <button
-                    style={{
-                      backgroundColor: `${coloretat}`,
-                      padding: "7px",
-                      color: "white",
-                      width: "35px",
-                      float: "right",
-                      marginTop: "-35px",
-                    }}
-                    id="btnfff"
-                    title="téléchager"
-                    disabled={`${etat}`}
-                  >
-                    <i class="fas fa-upload" onClick={onFileUpload}></i>
-                  </button>
-                </span>
-                {progress && (
-                  <progress id="progbar" value={progress} max="100" />
-                )}
-                <span id="spanfile" hidden={hidebutton}>
-                  <a href={getfilename} target="_blank">
-                    <button
-                      id="btnforfile"
-                      style={{ border: "none", backgroundColor: "transparent" }}
+                    <p
+                      id="pfile"
+                      style={{
+                        width: "40%",
+                        marginLeft: "6%",
+                        marginTop: "8px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
                     >
-                      <i class="fas fa-file-pdf"></i> {NomFichierFinal}
+                      {nomfichier}
+                    </p>
+                    &nbsp;&nbsp;
+                    <button
+                      style={{
+                        backgroundColor: `${coloretat}`,
+                        padding: "7px",
+                        color: "white",
+                        width: "35px",
+                        float: "right",
+                        marginTop: "-35px",
+                      }}
+                      id="btnfff"
+                      title="téléchager"
+                      disabled={`${etat}`}
+                    >
+                      <i class="fas fa-upload" onClick={onFileUpload}></i>
                     </button>
-                  </a>
-                  <i
-                    class="far fa-trash-alt"
-                    title="Supprimer"
-                    style={{ float: "right", marginTop: "5px" }}
-                    onClick={supprimerCV}
-                  ></i>
-                </span>
-                <br/>
-              </Card>
-                
-                </GridItem>
+                  </span>
+                  {progress && (
+                    <progress id="progbar" value={progress} max="100" />
+                  )}
+                  <span id="spanfile" hidden={hidebutton}>
+                    <a href={getfilename} target="_blank">
+                      <button
+                        id="btnforfile"
+                        style={{ border: "none", backgroundColor: "transparent" }}
+                      >
+                        <i class="fas fa-file-pdf"></i> {NomFichierFinal}
+                      </button>
+                    </a>
+                    <i
+                      class="far fa-trash-alt"
+                      title="Supprimer"
+                      style={{ float: "right", marginTop: "5px" }}
+                      onClick={supprimerCV}
+                    ></i>
+                  </span>
+                  <br/>
+                </Card>
+                  </GridItem>
+                </Grid>
+              </GridItem>
               </Grid>
-            </GridItem>
-
-            </Grid>
-          </div>
+           </div>
+           {/*: <h3>Loading ...</h3>}*/}
         </div>
       </div>
-      <Footer />
-    </div>
-  );
+      <Footer/>
+      </React.Fragment>
+      }
+      </div>
+    );
+  /*}else{
+    return(
+    <h3>Une erreur est survenue !</h3>)
+  }*/
 }
+
 export default ProfilePage;

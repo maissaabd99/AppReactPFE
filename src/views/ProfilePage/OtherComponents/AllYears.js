@@ -3,8 +3,8 @@ import React from "react";
 export default function AllYears (props){
     const { selectedItem,value,...rest } = props;
     return (     
-  <select  id={props.id} style={{padding:"9px",width:"15%"}} onClick={onclick} onChange ={onchange} defaultValue={value}>
-    <option disabled>Année</option>
+  <select  id={props.id} style={{padding:"9px",width:"23%"}} onClick={onclick} onChange ={onchange} defaultValue={value}>
+    <option value=""  data-default selected disabled>Choisir une année</option>
     <option value="2021">2021</option>
     <option value="2020">2020</option>
     <option value="2019">2019</option>

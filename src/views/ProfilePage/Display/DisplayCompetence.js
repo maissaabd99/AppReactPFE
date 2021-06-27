@@ -41,7 +41,7 @@ export default function DisplayCompetence(props) {
             document.getElementById("dispcomp"+item.id).style.display="none";
           }
             return(
-              <div>
+              <div  key={"editdivcompt"+item.id}>
               <div style= {{display:"none"}} id={"editdivcompt"+item.id}>
               <Compétence compt={item.titre}  niveau={item.niveau}
                  cle={item.id} btn={false} displaycomp={props.displaycomp} 
@@ -49,7 +49,6 @@ export default function DisplayCompetence(props) {
               />
             </div>
                 <div 
-                //style={{marginLeft:"100px"}} 
                 id={"dispcomp"+item.id} >
                   <Card>
                   <CardBody style={{display:"flex",alignItems:"center",flexDirection:"row",justifyContent:"space-between",width:"auto",flexWrap:"wrap",hyphens: "auto",whiteSpace: "pre-line"}}>                  

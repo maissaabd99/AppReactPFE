@@ -28,7 +28,6 @@ export default function DisplayEtude(props) {
             ).then((response) => {
             console.log(response.data);
             displayetude.splice(index,1)
-            console.log(displayetude)
             props.setDisplayEtude([]);
             props.setDisplayEtude(displayetude)
             div.style.display="none";
@@ -43,7 +42,7 @@ export default function DisplayEtude(props) {
             document.getElementById("dispetude"+item.id).style.display="none";
           }
             return(
-              <div>
+              <div key={"editdivforma"+item.id}>
               <div style= {{display:"none"}} id={"editdivforma"+item.id}>
               <Formation titredip={item.diplome} fac ={item.universite} 
                  anneeDeb={item.annee_debut}

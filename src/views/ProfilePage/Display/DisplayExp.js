@@ -14,11 +14,10 @@ import { isTemplateExpression } from "typescript";
 const useStyles = makeStyles(styles);
 
 export default function DisplayExp(props) {
-
+  var tabex = [];
   const classes = useStyles();
-  const {ProfilePage,cle,className,...rest} = props;
+  const {displayexp,ProfilePage,cle,className,...rest} = props;
   if(props.displayexp.length>0){
-    return (
         props.displayexp.map((item,index) =>{
            function deleteExp(e){
              e.preventDefault();
@@ -31,7 +30,7 @@ export default function DisplayExp(props) {
             console.log(response);
             props.displayexp.splice(index,1)
             props.setDisplayExp([]);
-            props.setDisplayExp(props.displayexp)
+            props.setDisplayExp(displayexp)
             div.style.display="none";
           }, (error) => {
             console.log(error);
@@ -43,9 +42,9 @@ export default function DisplayExp(props) {
             div.style.display ="block";
             document.getElementById("dispexp"+item.id_ex).style.display="none";
           }
-            return(
-              <div>
-                 <div style= {{display:"none"}} id={"editdivexp"+item.id_ex}>
+          tabex.push(
+              <div key={"editdivexp"+item.id_ex}>
+                <div style= {{display:"none"}} id={"editdivexp"+item.id_ex}>
                 <Experience titre={item.poste_occupe} employeur ={item.employeur} 
                    lieu={item.lieu_Exp} type={item.typeEmploi} dateDeb={item.date_debut}
                    dateFin ={item.date_fin} description={item.description}
@@ -54,12 +53,11 @@ export default function DisplayExp(props) {
                 />
               </div>
                 <div
-                  //style={{marginLeft:"100px"}}
-                   id={"dispexp"+item.id_ex} >
+                  id={"dispexp"+item.id_ex} >
                   <Card style={{display:"flex",alignItems:"left",flexDirection:"column",justifyContent:"space-between",width:"auto",flexWrap:"wrap",hyphens: "auto",whiteSpace: "pre-line"}}>
                   <CardBody>                  
                       <h5><strong>{item.poste_occupe}</strong>
-                        <br/> {item.employeur} - {item.typeEmploi}
+                        <br/> {item.employeur} - {item.typeEmploi} - {item.lieu_Exp}
                         <br/> Période : {new Date(item.date_debut).toLocaleString('fr-FR').slice(0,10)} -  {new Date(item.date_fin).toLocaleString('fr-FR').slice(0,10)} 
                         {/*&nbsp; {new Date(item.date_fin) - new Date(item.date_debut)} mois*/}
                       </h5> 
@@ -74,10 +72,10 @@ export default function DisplayExp(props) {
               </div>
             )
         })
-  ); 
-} else{
-    return(
-       null
-    );
-}
+      }
+  return (
+    <div>
+      {tabex}
+    </div>
+  )
 }

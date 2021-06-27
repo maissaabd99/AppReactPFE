@@ -70,7 +70,7 @@ if(localStorage.getItem('access_token')!=null){
                   }
                 });
               authAxios.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
-              console.log(authAxios.defaults.headers.common['Authorization']);
+           //   console.log(authAxios.defaults.headers.common['Authorization']);
               originalRequest.headers['Authorization'] = 'Bearer ' + data.token;
               localStorage.setItem("access_token",data.token)
               localStorage.setItem("refresh_token",data.refreshToken)
@@ -95,7 +95,6 @@ if(localStorage.getItem('access_token')!=null){
       return Promise.reject(err);
     }
   );
-
   }
   export default authAxios;
 

@@ -4,14 +4,15 @@ export default function AllLanguages (props){
     const { selectedItem,...rest } = props;
    
     return (
-        <select id={props.id} style={{padding:"9px",width:"35%"}} onClick={props.onClick} onChange={props.onChange} value={props.value} onSelect={props.onSelect}>
-  <option >Afrikaans</option>
+        <select id={props.id} required style={{padding:"9px",width:"35%"}} onClick={props.onClick} onChange={props.onChange} value={props.value} onSelect={props.onSelect}>
+  <option value="" selected disabled>Choisir une langue</option>
+  <option>Afrikaans</option>
   <option>Albanian</option>
-  <option >Arabic</option>
-  <option >Armenian</option>
-  <option >Basque</option>
-  <option >Bengali</option>
-  <option >Bulgarian</option>
+  <option>Arabic</option>
+  <option>Armenian</option>
+  <option>Basque</option>
+  <option>Bengali</option>
+  <option>Bulgarian</option>
   <option >Catalan</option>
   <option >Cambodian</option>
   <option >Chinese (Mandarin)</option>

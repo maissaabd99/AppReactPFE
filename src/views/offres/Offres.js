@@ -58,6 +58,7 @@ import clsx from 'clsx';
 import {FacebookShareCount,FacebookShareButton,FacebookIcon,TwitterIcon,TwitterShareButton, LinkedinShareButton, LinkedinIcon} from "react-share";
 import Loader from "react-loader-spinner";
 import { Texture } from "@material-ui/icons";
+import Mots_Creux from "./listewords";
 
 const useStyles = makeStyles(styles, () => ({
   root: {
@@ -83,7 +84,7 @@ export default function Offres(props) {
   const [classicModal1, setClassicModal1] = useState(false);
   const [classicModalLogin, setClassicModalLogin] = useState(false);
 
-  //get user
+  //get user(correcte)
   const [user, setUser] = useState([]);
   function getUser() {
     authAxios
@@ -213,22 +214,25 @@ export default function Offres(props) {
   const [a, setA] = useState(false)
 
   function verifWords(str1,str2) {
+
     var words1 = str1.split(/\s+/g),
       words2 = str2.split(/\s+/g),
       i,
       j;
+      console.log("tableau words 1",words1)
     var counts=0;
     for (i = 0; i < words1.length; i++) {
-    //  console.log("i from boucle 1 :",i)
       for (j = 0; j < words2.length; j++) {
-       // console.log("j from boucle 1 :",j)
-        if (words1[i].toLowerCase() == words2[j].toLowerCase() && isNaN(words1[i]) && isNaN(words2[j])
-         && words1[i].match(/[a-zA-Z]/) && words2[j].match(/[a-zA-Z]/)) {
-          counts++;
-          console.log('word : "' + words1[i] + ' " was found in both strings');
+        if (words1[i].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() == words2[j].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() && isNaN(words1[i]) && isNaN(words2[j])
+         && words1[i].match(/[a-zA-Z]/) && words2[j].match(/[a-zA-Z]/) ) {
+           if(Mots_Creux.includes(words1[i].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())!=true){
+            counts++;
+            console.log('word : "' + words1[i] + ' " was found in both strings');
+           }        
         }
       }
     }
+    console.log(counts)
     return counts;
   }
   //check user's profile data
@@ -250,7 +254,7 @@ export default function Offres(props) {
         cmpts = user.competence.find(
           element => 
           //element.titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().split(" ").includes(o.titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().split(" "))
-          element.value >= o.value && verifWords(element.titre,o.titre)>0);
+          element.value >= o.value && verifWords(element.titre,o.titre) > 0);
         if (cmpts) {
           founds2.push(cmpts)
         }
@@ -259,10 +263,9 @@ export default function Offres(props) {
       //diplomes
       var founds3 = [];
       var dips;
-      // console.log(user.competences)
-     for(var j = 0; j< offreclicked.diplome.length;j++) {
+     for(var j=0; j<offreclicked.diplome.length;j++) {
         console.log("cpt j :",j)
-        dips = user.formation.find(element => (verifWords(element.diplome,offreclicked.diplome[j].titre)>0)
+        dips = user.formation.find(element=>(verifWords(element.diplome,offreclicked.diplome[j].titre) >  0)
         //  element.normalize("NFD").replace(/[\u0300-\u036f]/g, "").diplome.toUpperCase().includes(o.titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase())
           );
         //  for(var i = 0;i< user.formation.length;i++){
@@ -274,8 +277,6 @@ export default function Offres(props) {
             founds3.push(dips)
           }
       }
-      
-      
       console.log("tab founds 3 of displomes :",founds3)
       console.log("tab founds 2 of competeces :",founds2)
       console.log("verif displomes length", founds3.length >= offreclicked.diplome.length)
@@ -320,14 +321,13 @@ export default function Offres(props) {
         else{
           console.log(user.candidatures)
           setClassicModal1(false);
-          setMessage("Votre profil ne correspond pas aux exigences du cette offre !")
+          setMessage("Votre profil ne correspond pas aux exigences de cette offre !")
           setTextButton("Compris")
           setClassicModalLogin(true)
         }
       }
       setOffreClicked([])
     }
-
   }
   function expyears(anneexp) {
     console.log("nbranne from function switch :", nbrannee)
@@ -356,8 +356,7 @@ export default function Offres(props) {
 
   useEffect(() => {
     getAllOffres();
-    getUser();
-
+    getUser()
   }, []);
   var x = 0;
   useEffect(() => {
@@ -367,13 +366,10 @@ export default function Offres(props) {
         x = x + (((new Date(item.date_fin) - new Date(item.date_debut)) / (1000 * 3600 * 24)) / 365)
         setNbrAnnee(x)
       })
-      //  console.log(nbrannee)
     }
   }, [user, nbrannee]);
 
   //function getOffresPagination(){
-
-  // }
   const [fordisplay, setForDisplay] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [offrePerPage, setOffrePerPage] = useState(2)

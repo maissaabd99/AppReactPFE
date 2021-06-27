@@ -37,7 +37,11 @@ export default function Hobbies(props) {
         console.log(response.data);
         var div = document.getElementById("hob" + cle);
         div.style.display = "none";
-        setDisplayHobby(displayhobby.concat(response.data.hobby));
+
+        displayhobby.unshift(response.data.hobby)
+        setDisplayHobby([...displayhobby]); 
+
+      //  setDisplayHobby(displayhobby.concat(response.data.hobby));
 
       }, (error) => {
         console.log(error);
@@ -50,9 +54,14 @@ export default function Hobbies(props) {
         var div = document.getElementById("hob"+cle);
         div.style.display = "none";
      //   delete displayhobby[props.id];
-        displayhobby.splice(props.id,1)
-        setDisplayHobby([])
-        setDisplayHobby(displayhobby.concat(response.data.updatedhobby));
+
+     displayhobby.splice(props.id,1)
+     setDisplayHobby([])
+     displayhobby.splice(props.id,0,response.data.updatedhobby)
+     setDisplayHobby([...displayhobby]);  
+
+        /*displayhobby.splice(props.id,1)
+        setDisplayHobby(displayhobby.concat(response.data.updatedhobby));*/
       }, (error) => {
         console.log(error);
       })

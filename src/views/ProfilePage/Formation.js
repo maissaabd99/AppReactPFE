@@ -61,7 +61,9 @@ export default function Formation(props) {
             var div = document.getElementById("formation" + cle);
             console.log(div)
             div.style.display = "none";
-            setDisplayEtude(displayetude.concat(response.data.formation));
+            displayetude.unshift(response.data.formation)
+            setDisplayEtude([...displayetude]);
+            //setDisplayEtude(displayetude.concat(response.data.formation));
           }, (error) => {
             console.log(error);
           })
@@ -81,11 +83,9 @@ export default function Formation(props) {
           // props.div1.style.display="none";
             //delete displayetude[props.id];
             displayetude.splice(props.id,1)
-            console.log(displayetude)
             setDisplayEtude([])
-            setDisplayEtude(displayetude.concat(response.data.updatedformation));
-            //props.div2.style.display="none"
-
+            displayetude.splice(props.id,0,response.data.updatedformation)
+            setDisplayEtude([...displayetude]);
           }, (error) => {
             console.log(error);
           })
@@ -97,7 +97,6 @@ export default function Formation(props) {
   
   return (
     <div 
-    //style={{marginLeft:"100px"}} 
     id={"formation"+cle}>
               <Card style={{width:"auto"}}>
               <CardBody>        

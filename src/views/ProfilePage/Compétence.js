@@ -39,7 +39,11 @@ const [niveau,setNiveau] = useState(props.niveau);
         console.log(response.data);
         var div = document.getElementById("compt" + cle);
         div.style.display = "none";
-        props.setDisplayComp(props.displaycomp.concat(response.data.comp));
+
+        props.displaycomp.unshift(response.data.comp)
+        props.setDisplayComp([...props.displaycomp]); 
+
+      //  props.setDisplayComp(props.displaycomp.concat(response.data.comp));
       }, (error) => {
         console.log(error);
       })
@@ -53,9 +57,16 @@ const [niveau,setNiveau] = useState(props.niveau);
         var div = document.getElementById("compt" + cle);
         div.style.display = "none";
         //delete props.displaycomp[props.id];
+
         props.displaycomp.splice(props.id,1)
+        props.setDisplayComp([])   
+        props.displaycomp.splice(props.id,0,response.data.updatedcomp)
+        props.setDisplayComp([...props.displaycomp]);  
+
+
+        /**props.displaycomp.splice(props.id,1)
         props.setDisplayComp([]);
-        props.setDisplayComp(props.displaycomp.concat(response.data.updatedcomp));
+        props.setDisplayComp(props.displaycomp.concat(response.data.updatedcomp));*/
       }, (error) => {
         console.log(error);
       })
@@ -81,9 +92,10 @@ const [niveau,setNiveau] = useState(props.niveau);
                     }}
                   />
          </div>
-         <select style={{padding:"8.5px",width:"30%"}} id={"niveaucompt"+cle} 
+         <select style={{padding:"8.5px",width:"30%"}} id={"niveaucompt"+cle}  required
              onChange={e=>setNiveau(e.target.value)} value={niveau}>
-                 <option class="dropdown" style={{hover:"primary"}} selected>Pas développée</option>
+                 <option value=""  data-default selected disabled>Choisir un niveau</option>
+                 <option>Pas développée</option>
                  <option>Connaissance de base</option>
                  <option>Compétent</option>
                  <option>Fort</option>

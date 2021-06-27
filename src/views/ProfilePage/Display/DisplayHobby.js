@@ -42,8 +42,8 @@ export default function DisplayHobby(props) {
             document.getElementById("disphobby"+item.id).style.display="none";
           }
             return(
-              <div>
-                <div  style={{ display: "none" }} id={"editdivhobby" + item.id}>
+              <div key={"editdivhobby"+item.id}>
+                <div style={{ display: "none" }} id={"editdivhobby" + item.id}>
                   <Hobbies hobby={item.hobby}
                     cle={item.id} btn={false} displayhobby={props.displayhobby}
                     setDisplayHobby={props.setDisplayHobby} id={index}

@@ -46,8 +46,14 @@ export default function DisplayLangue(props) {
       }
       tab.push(
         <div key={"editdiv" + item.id}>
-          <div style={{ display: "none" }} id={"editdiv" + item.id} >
-            <Langue contenu={item.langue} niveau={item.niveau} cle={item.id} btn={false} update={props.tableau} setDisplay={props.setDisplay} id={index} />
+          <div style={{ display: "none" }} id={"editdiv" + item.id}>
+            <Langue contenu={item.langue} 
+            niveau={item.niveau} 
+            cle={item.id} 
+            btn={false} 
+            update={props.tableau} 
+            setDisplay={props.setDisplay} 
+            id={index} />
           </div>
           <div id={"disp" + item.id}>
             <div id={"grid" + item.id}>

@@ -18,14 +18,14 @@ import classNames from "classnames";
 import Parallax from "components/Parallax/Parallax";
 import { useParams } from 'react-router-dom'
 //import { FacebookButton } from 'react-social';
-import {Checkbox,FormControlLabel,FormGroup,Grid,Snackbar} from "@material-ui/core";
+import {Checkbox,Dialog,DialogActions,DialogContent,DialogTitle,FormControlLabel,FormGroup,Grid,Snackbar} from "@material-ui/core";
 import authAxios from "authAxios";
 // @material-ui/icons
 import "react-notifications-component/dist/theme.css";
 import { Alert } from "@material-ui/lab";
 import CardFooter from "components/Card/CardFooter";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { Check } from "@material-ui/icons";
+import { Check, SettingsOutlined } from "@material-ui/icons";
 import { number } from "prop-types";
 import { Link } from "react-router-dom";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -60,6 +60,7 @@ export default function Examen(props) {
   
   // get examen
     function getExamen() {
+      setVerif(false)
       setLoading(true)
     var id = localStorage.getItem("iduser");
      authAxios
@@ -190,7 +191,7 @@ export default function Examen(props) {
    // submit result exam 
       function submit (){
         var total = Number(0);
-        console.log("reponse 1 checked ou non :",(tab[0].reps[0].correct == "true"))
+       // console.log("reponse 1 checked ou non :",(tab[0].reps[0].correct == "true"))
         tab.map((x,j)=>{
           var nbrcorr =0
           var final = Number(0);
@@ -244,29 +245,55 @@ export default function Examen(props) {
         });
      }
     const[score,setScore] = useState()
-    const[loading,setLoading] = useState(true);
+    const[loading,setLoading] = useState();
 
+    useEffect(() => {
+      
+        console.log("component did mouuunt nowww !!!!!!!!!!!")
+      // returned function will be called on component unmount 
+      return () => {
+        setClassicModal1(true)
+       // alert("voulez vous quitter ?")
+       // submit()
+        console.log("component will unmouuut nowww !!!!!!!!!!!")
+      }
+    }, [])
+    const [classicModal1, setClassicModal1] = useState(false);
     //on start exam ,set passed true
     function startExam(){
       var id= localStorage.getItem('iduser');
       setState1({ ...state1, open: true });
       document.getElementById("divqcm").style.display="block";
       document.getElementById("infoqcm").style.display="none";
-     /* authAxios.put(`Exam/setPassedExam/${idexam}/${id}`)
+      authAxios.put(`Exam/addExamenResult/${exam.id}/${id}/rejeté`,
+      {
+        id: idcandidature,
+        note_totale: 0,
+      }).then((res)=>{
+        console.log(res.data)
+      },(error)=>{
+        console.log(error)
+      });
+
+    /*  authAxios.put(`Exam/setPassedExam/${idexam}/${id}`)
       .then((res) => {
         console.log(res.data)
-        setState1({ ...state1, open: true });
-        document.getElementById("divqcm").style.display="block";
-        document.getElementById("infoqcm").style.display="none";
+        //setState1({ ...state1, open: true });
+        //document.getElementById("divqcm").style.display="block";
+        //document.getElementById("infoqcm").style.display="none";
       },
       (error) => {
         console.log(error);
       });*/
     }
 
+if (loading == false && exam == 0){
+  return(<NotFound404/>
+  );
+}
+if (loading == false && exam != 0) {
   return (
     <div>
-    {verif === true  ?
       <React.Fragment>
       <Parallax style={{ height: "100px" }} /> 
       <Snackbar
@@ -289,14 +316,6 @@ export default function Examen(props) {
          />
         </Alert>
       </Snackbar>
-      <Loader
-        type="Bars"
-        color="purple"
-        height={50}
-        width={50}
-        visible={loading}
-       // timeout={7000} //3 secs
-      />
       <h3 style={{ textAlign: "center",margin:"20px"}}>
         <strong><span style={{borderBottom:"5px solid grey",padding:10}}>Evaluation</span> </strong>{" "}
       </h3>
@@ -311,6 +330,7 @@ export default function Examen(props) {
                 <Alert severity="warning">
                 <ul>
                     <li>Cet examen est un  <strong>questionnaire à choix multiples (QCM) </strong> contenant <strong>{exam.nbr_questions} questions .</strong></li>
+                    <li>Il doit être passer qu'une seule fois </li>
                     <li>Il doit être passer dans une durée de <strong>
                       {
                         h > 0 && m >0  ? <span key="h">{h} h et {m} minutes .</span>  : 
@@ -318,6 +338,7 @@ export default function Examen(props) {
                           <span key="s">{m} minutes .</span>
                         ]}
                       </strong></li>
+                      <li>Si vous essayer de quitter la page , vous serez considéré comme ayant passé l'examen </li>
                     <li>Vous obtiendrez votre <strong>score</strong> à la fin de cet examen .</li>
                 </ul>
                </Alert>
@@ -425,11 +446,33 @@ export default function Examen(props) {
       </div>
       <Footer />
       </React.Fragment>
-      : 
-      <NotFound404>
-{      /*<Loader type="Bars" color="purple" height={50} width={50} style={{marginTop:"20%",marginLeft:"50%"}}></Loader>
-*/}       </NotFound404>
-    }
-    </div>
-  );
+      <Dialog
+        classes={{root: classes.center,paper: classes.modal}}
+        open={classicModal1}
+        keepMounted
+        onClose={() => setClassicModal1(false)}
+        aria-labelledby="classic-modal-slide-title"
+        aria-describedby="classic-modal-slide-description"
+      >
+        <DialogTitle
+          id="classic-modal-slide-title"
+          disableTypography
+          className={classes.modalHeader}
+        >
+        </DialogTitle>
+        <DialogContent id="classic-modal-slide-description">
+           Voulez vous vraiment abondonner l'examen ? 
+      </DialogContent>
+      <DialogActions>
+        <Button color="primary" onClick={()=>submit()}>Quitter</Button>
+        <Button onClick={() => setClassicModal1(false)}>Annuler</Button>
+      </DialogActions>
+      </Dialog>
+    </div>);
+}else{
+  return <div>
+    <Loader type="ThreeDots" color="purple" height={60} width={60} style={{marginLeft:"45%",marginTop:"15%"}} visible={true}></Loader>
+  </div>
 }
+}
+  

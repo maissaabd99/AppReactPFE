@@ -132,6 +132,8 @@ export default function SectionJavascript() {
                   <br />
                   <FormControl fullWidth>
                     <Datetime
+                   // dateFormat="MM-DD-YYYY"
+                      timeFormat={false}
                       inputProps={{ placeholder: "Datetime Picker Here" }}
                     />
                   </FormControl>

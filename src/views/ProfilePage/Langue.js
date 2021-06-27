@@ -36,11 +36,11 @@ export default function Langue(props) {
   });
 
   function AddLang(e){
+    e.preventDefault();
     var id = localStorage.getItem("iduser");
    // console.log(document.getElementById("selectlang"+cle).options[document.getElementById("selectlang"+cle).selectedIndex].textContent)
     console.log(document.getElementById("selectniveau"+cle).options[document.getElementById("selectniveau"+cle).selectedIndex].textContent)
     console.log(document.getElementById("selectniveau"+cle).selectedIndex);
-
     var valurNiveau  = document.getElementById("selectniveau"+cle).selectedIndex;
     var lang =document.getElementById("selectlang"+cle).options[document.getElementById("selectlang"+cle).selectedIndex].textContent;
     var niveau =document.getElementById("selectniveau"+cle).options[document.getElementById("selectniveau"+cle).selectedIndex].textContent;
@@ -104,9 +104,11 @@ export default function Langue(props) {
             key={vertical + horizontal}
           /> 
         <Card >
+        <form onSubmit={AddLang}>
         <CardBody style={{display:"flex",alignItems:"center",flexDirection:"row",justifyContent:"space-between",flexWrap: "wrap"}}>
-          <AllLanguages value={l} id={"selectlang"+cle}  onChange={e=>{setLangue(e.currentTarget.value);console.log(e.currentTarget.value)}} contenu = {l}></AllLanguages>&nbsp;
-          <select style={{padding:"9px",width:"30%"}} id={"selectniveau"+cle} value={n} onChange={(e)=>{setNiveau(e.target.value);console.log(e.target.selectedIndex)}} >
+          <AllLanguages  required value={l} id={"selectlang"+cle}  onChange={e=>{setLangue(e.currentTarget.value);console.log(e.currentTarget.value)}} contenu = {l}></AllLanguages>&nbsp;
+          <select required style={{padding:"9px",width:"30%"}} id={"selectniveau"+cle} value={n} onChange={(e)=>{setNiveau(e.target.value);console.log(e.target.selectedIndex)}} >
+                <option value="" selected disabled>Choisir un niveau</option>
                 <option>Connaissance passive</option>
                 <option>Connaissance orale de base</option>
                 <option>Capacité conversationnelle</option>
@@ -114,11 +116,12 @@ export default function Langue(props) {
                 <option>Langue maternelle</option>
           </select>
           <div style={{float:"right"}}>
-          <Button color="primary" style={{padding:"10px",marginTop:"2px"}} onClick={AddLang}>Enregistrer</Button>&nbsp;
+          <Button color="primary" style={{padding:"10px",marginTop:"2px"}} type="submit">Enregistrer</Button>&nbsp;
          { /*<Link  cle={cle} key={props.cle}>&nbsp;<button style={{padding:"8px"}}  class="primary"  >&nbsp;<i  class="far fa-trash-alt" title="Supprimer" style={{fontSize:"15px"}}></i>&nbsp;</button>&nbsp;</Link>*/}
           {props.btn==null ? (<Link><button style={{padding:"8.2px"}} onClick= {deleteLang} class="primary">&nbsp;<i class="fas fa-times" title="Fermer" style={{fontSize:"15px"}}></i>&nbsp;</button>&nbsp;</Link>):null}&nbsp;
           </div>
           </CardBody>
+          </form>
         </Card>  
         </div>                                                                                                                                              
   ); 

@@ -23,6 +23,7 @@ import AllMonths from "./OtherComponents/AllMonths";
 import authAxios from "authAxios";
 import styless from "assets/jss/material-kit-react/views/componentsSections/navbarsStyle.js";
 import { TextField } from "@material-ui/core";
+import { now } from "moment";
 
 const useStyles = makeStyles(styles);
 
@@ -33,11 +34,11 @@ export default function Experience(props) {
   const[employeur,setEmployeur] = useState(props.employeur);
   const[titre,setTitre] = useState(props.titre);
   const[lieu,setLieu] = useState(props.lieu);
-  const[type,setType] = useState(props.typeEmploi);
+  const[type,setType] = useState(props.type);
+  //console.log("type de l'emploiiii",type)
   const[datedeb,setDatedeb] = useState(props.dateDeb);
   const[datefin,setDatefin] = useState(props.dateFin);
   const[description,setDescription] = useState(props.description);
-
 
     function deleteExp(e){
       console.log("cle"+cle);
@@ -58,6 +59,7 @@ export default function Experience(props) {
       var description=document.getElementById("description"+cle).value;
       console.log(description)
       console.log(lieu)
+      console.log( new Date().toLocaleDateString())
       console.log(displayexp);
       if (datedebut < datefin) {
         if (props.btn == null) {
@@ -74,9 +76,8 @@ export default function Experience(props) {
             var div = document.getElementById("exp" + cle);
             console.log(div)
             div.style.display = "none";
-            displayexp.unshift(response.data.exp)
-            setDisplayExp([...displayexp]);
-
+            props.displayexp.unshift(response.data.exp)
+            props.setDisplayExp([...props.displayexp]);
           }, (error) => {
             console.log(error);
           })
@@ -115,7 +116,7 @@ export default function Experience(props) {
    // style={{marginLeft:"100px"}}
      id={"exp"+cle}>
               <Card style={{width:"auto"}}>
-              <CardBody >        
+              <CardBody>        
                 <form onSubmit={AddExp}>      
                    <GridContainer>
                    <GridItem xs={12} sm={12} md={6}>
@@ -135,7 +136,7 @@ export default function Experience(props) {
                     />
                  </GridItem>    
                   <GridItem xs={12} sm={12} md={6}>
-                    <CustomInput onChange={e=>setTitre(e.currentTarget.value)} value={titre}
+                    <CustomInput onChange={(e)=>setTitre(e.currentTarget.value)} value={titre}
                       labelText="Titre du poste ..."
                       id={"titreposte"+cle} 
                       formControlProps={{
@@ -151,7 +152,7 @@ export default function Experience(props) {
                     />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={6}>
-                    <CustomInput onChange={e=>setLieu(e.currentTarget.value)} value={lieu}
+                    <CustomInput onChange={(e)=>setLieu(e.currentTarget.value)} value={lieu}
                       labelText="Lieu de travail ..."
                       id={"lieutravail"+cle}
                       formControlProps={{
@@ -168,12 +169,13 @@ export default function Experience(props) {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={6}>
                     <br></br>
-                      <select native id={"typemp"+cle} style={{padding:"10px",width:"100%"}}
-                         onChange={e=>setType(e.currentTarget.value)} value={type}
+                      <select required id={"typemp"+cle} style={{padding:"10px",width:"100%"}}
+                        onChange={(e)=>setType(e.target.value)} value={type}
                       >
+                      <option value="" data-default selected disabled>Choisir un type de contrat</option>
                         <option>Stage</option>
-                        <option>Contrat permanent</option>
                         <option>CDD</option>
+                        <option>CDI</option>
                     </select>
                     </GridItem>
                     </GridContainer>             
@@ -181,10 +183,24 @@ export default function Experience(props) {
                     <div style={{display:"flex",flexDirection:"row",width:"100%",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap"}}>
                         <strong>A travaillé de : </strong>
                         <TextField type= "date" id={"datedeb"+cle}
+                           onKeyDown={(e)=>e.preventDefault()}
+                                    type="date"
+                                    InputProps={{
+                                      inputProps: {
+                                        min: "1980-12-31",
+                                        max: "2030-12-31"}
+                                    }}
                           value={datedeb !=null ? datedeb.slice(0,10) : null} onChange={e=>setDatedeb(e.target.value)} 
                         />
                         <strong> au </strong>
                         <TextField type= "date" id={"datefin"+cle}
+                         onKeyDown={(e)=>e.preventDefault()}
+                                    type="date"
+                                    InputProps={{
+                                      inputProps: {
+                                        min: "1980-12-31",
+                                        max: "2030-12-31"}
+                                    }}
                           value={datefin!= null ? datefin.slice(0,10) : null} onChange={e=>setDatefin(e.target.value)} 
                         />   
                     </div>

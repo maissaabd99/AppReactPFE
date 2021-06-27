@@ -5,10 +5,8 @@ import Components from "views/Components/Components.js";
 
 export default function MyProvider (props) {
     const MyContext = createContext();
-
     const [user,setUser] =useState ([])
     const providerValue  = useMemo(() =>({ user,setUser}), [user,setUser])
-
     return (
         <MyContext.Provider 
           value={providerValue}>
