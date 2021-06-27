@@ -244,8 +244,8 @@ export default function Examen(props) {
         },(error)=>{
           console.log(error)
         });
-     }
-    const[score,setScore] = useState()
+      }
+    const[score,setScore] = useState();
     const[loading,setLoading] = useState();
 
     useEffect(() => {

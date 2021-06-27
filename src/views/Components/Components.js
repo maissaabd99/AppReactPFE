@@ -83,7 +83,7 @@ export default function Components(props) {
         </div>
 
       </Parallax>
-      <div className={classNames(classes.main, classes.mainRaised)}>
+     {/* <div className={classNames(classes.main, classes.mainRaised)}>
         <SectionBasics />
         <SectionNavbars />
         <SectionTabs />
@@ -103,7 +103,7 @@ export default function Components(props) {
         </GridItem>
         <SectionExamples />
         <SectionDownload />
-      </div>
+      </div>*/}
       <Footer/>
     </div>
   );

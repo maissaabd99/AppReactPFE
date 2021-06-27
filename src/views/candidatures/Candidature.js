@@ -372,7 +372,6 @@ export default function Candidature(props) {
                                   flexDirection: "row",
                                 }}
                               >
-                               {item.require===true ? (<h6> (Essentiel) </h6>) : <h6> (Optionnel) </h6>} {" "}
                                 <h6><span>{item.langue}</span></h6>
                                 <span style={{fontSize:"15px"}}>{item.niveau}</span>
                               </AccordionDetails>
@@ -398,7 +397,6 @@ export default function Candidature(props) {
                                   flexDirection: "row",
                                 }}
                               >
-                               {item.require===true ? (<h6> (Essentiel) </h6>) : <h6> (Optionnel) </h6>} {" "}
                                 <h6><span>{item.titre}</span></h6>
                                 <span style={{fontSize:"15px"}}>{item.niveau}</span>
                               </AccordionDetails>
