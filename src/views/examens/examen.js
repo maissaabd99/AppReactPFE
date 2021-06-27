@@ -237,6 +237,7 @@ export default function Examen(props) {
         authAxios.put(`Exam/addExamenResult/${idexam}/${idcandidat}/${etat}`,
         {
           id: idcandidature,
+          note_exam: noteQCMTotal,
           note_totale: total,
         }).then((res)=>{
           console.log(res.data)
